@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,6 +14,7 @@ using System.Windows.Forms;
 
 //TODO
 //save to file, read from file, frontend, start registers value not always zero
+//max number of commands
 
 namespace MicroprocessorSimulator
 {
@@ -23,8 +25,13 @@ namespace MicroprocessorSimulator
         private int currentInstructionType;
         private int currentDestinationType;
         private int currentSourceType;
+        private int currentCommandsExecutingType;
         private Int16[] registers = { 0, 0, 0, 0 };
         private int commandNumber = 0;
+        private int currentExecutingCommand = 0;
+
+        private readonly Color backExecutedCommandsColor = Color.LightSlateGray;
+        private readonly Color backCommandBoxColor = Color.Cornsilk;
 
         private Dictionary<int, string> addresingTypeDic = new Dictionary<int, string>();
         private Dictionary<int, string> instructionTypeDic = new Dictionary<int, string>();
@@ -181,28 +188,82 @@ namespace MicroprocessorSimulator
             currentSourceType = int.Parse(radioButton.Tag.ToString());
         }
 
+        private void ChooseCommandsExecutingTypeViaRadioButton(object sender, EventArgs e)
+        {
+            RadioButton radioButton = (RadioButton)sender;
+            currentCommandsExecutingType = int.Parse(radioButton.Tag.ToString());
+        }
+
         private void ExecuteAction(object sender, EventArgs e)
         {
-            for(int i = 0; i < registersCommands.Count; i++)
+            if (currentCommandsExecutingType == (int)CommandExecutingType.TOTAL)
             {
-                Int16 registerValue = (Int16)registersCommands[i][3];
-
-                switch (registersCommands[i][1])
+                for (int i = 0; i < registersCommands.Count; i++)
                 {
-                    case 0:
-                        registers[registersCommands[i][2]] += registerValue;
-                        break;
-                    case 1:
-                        registers[registersCommands[i][2]] -= registerValue;
-                        break;
-                    case 2:
-                        registers[registersCommands[i][2]] = registerValue;
-                        break;
+                    ExecuteCurrentCommand(i);
                 }
 
-                string stringBytes = ConvertToBites(registers[registersCommands[i][2]]);
-                DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registersCommands[i][2]], textBoxes[2 * registersCommands[i][2] + 1]);
+                currentExecutingCommand = 0;
+                System.Threading.Thread.Sleep(300);     //sleep for 300ms to enable user see performed action
+                ChangeAllTextBacgroundColor(backCommandBoxColor);
             }
+
+            else if(currentExecutingCommand < commandNumber && currentCommandsExecutingType == (int)CommandExecutingType.STEP_BY_STEP)
+            {
+                ExecuteCurrentCommand(currentExecutingCommand);
+                ChangeCommandsColor(currentExecutingCommand, backExecutedCommandsColor);
+                currentExecutingCommand++;
+
+                if (currentExecutingCommand >= commandNumber)
+                {
+                    currentExecutingCommand = 0;
+                    System.Threading.Thread.Sleep(300); //sleep for 300ms to enable user see performed action
+                    ChangeRichTextBoxBackColor();
+                }
+            }
+        }
+
+        private void ChangeRichTextBoxBackColor()
+        {
+            for (int i = 0; i < registersCommands.Count; i++)
+            {
+                ChangeCommandsColor(i, backCommandBoxColor);
+            }
+        }
+
+        private void ExecuteCurrentCommand(int i)
+        {
+            Int16 registerValue = (Int16)registersCommands[i][3];
+
+            switch (registersCommands[i][1])
+            {
+                case 0:
+                    registers[registersCommands[i][2]] += registerValue;
+                    break;
+                case 1:
+                    registers[registersCommands[i][2]] -= registerValue;
+                    break;
+                case 2:
+                    registers[registersCommands[i][2]] = registerValue;
+                    break;
+            }
+
+            string stringBytes = ConvertToBites(registers[registersCommands[i][2]]);
+            DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registersCommands[i][2]], textBoxes[2 * registersCommands[i][2] + 1]);
+        }
+
+        private void ChangeCommandsColor(int i, Color color)
+        {
+            commandsRichTextBox.SelectionStart = commandsRichTextBox.GetFirstCharIndexFromLine(i);
+            commandsRichTextBox.SelectionLength = commandsRichTextBox.Lines[i].Length;
+            commandsRichTextBox.SelectionBackColor = color;
+        }
+
+        private void ChangeAllTextBacgroundColor (Color color)
+        {
+            commandsRichTextBox.SelectionStart = commandsRichTextBox.GetFirstCharIndexFromLine(0);
+            commandsRichTextBox.SelectionLength = commandsRichTextBox.TextLength;
+            commandsRichTextBox.SelectionBackColor = color;
         }
 
         private void LoadActionsIntoMemory(object sender, EventArgs e)
@@ -215,16 +276,19 @@ namespace MicroprocessorSimulator
             command = $"{commandNumber}. {addresingTypeDic[currentAddressingType]} {instructionTypeDic[currentInstructionType]} {sourceTypeTextBox}"+
                 $"{destinationTypeDic[currentDestinationType]} {numericBox.Value};";
 
-            commandsTextBox.AppendText(command);
-            commandsTextBox.AppendText(Environment.NewLine);
+            command = commandNumber == 0 ? command : (" " + command);
+
+            commandsRichTextBox.AppendText(command);
+            commandsRichTextBox.AppendText(Environment.NewLine);
             commandNumber++;
         }
 
         private void ClearCommands(object sender, EventArgs e)
         {
-            commandsTextBox.Clear();
+            commandsRichTextBox.Clear();
             commandNumber = 0;
             registersCommands.Clear();
+            currentExecutingCommand = 0;
         }
     }
 }
