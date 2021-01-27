@@ -211,7 +211,8 @@ namespace MicroprocessorSimulator
             else if(currentExecutingCommand < commandNumber && currentCommandsExecutingType == (int)CommandExecutingType.STEP_BY_STEP)
             {
                 ExecuteCurrentCommand(currentExecutingCommand);
-                ChangeCommandsColor(currentExecutingCommand, backExecutedCommandsColor);
+                ChangeCommandFontColor(currentExecutingCommand-1, Color.Black);     //change color back to black
+                ChangeCommandsBackgroundColor(currentExecutingCommand, backExecutedCommandsColor);
                 currentExecutingCommand++;
 
                 if (currentExecutingCommand >= commandNumber)
@@ -220,6 +221,10 @@ namespace MicroprocessorSimulator
                     System.Threading.Thread.Sleep(300); //sleep for 300ms to enable user see performed action
                     ChangeRichTextBoxBackColor();
                 }
+                else
+                {
+                    ChangeCommandFontColor(currentExecutingCommand-1, Color.Red);
+                }
             }
         }
 
@@ -227,7 +232,7 @@ namespace MicroprocessorSimulator
         {
             for (int i = 0; i < registersCommands.Count; i++)
             {
-                ChangeCommandsColor(i, backCommandBoxColor);
+                ChangeCommandsBackgroundColor(i, backCommandBoxColor);
             }
         }
 
@@ -252,7 +257,7 @@ namespace MicroprocessorSimulator
             DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registersCommands[i][2]], textBoxes[2 * registersCommands[i][2] + 1]);
         }
 
-        private void ChangeCommandsColor(int i, Color color)
+        private void ChangeCommandsBackgroundColor(int i, Color color)
         {
             commandsRichTextBox.SelectionStart = commandsRichTextBox.GetFirstCharIndexFromLine(i);
             commandsRichTextBox.SelectionLength = commandsRichTextBox.Lines[i].Length;
@@ -264,6 +269,13 @@ namespace MicroprocessorSimulator
             commandsRichTextBox.SelectionStart = commandsRichTextBox.GetFirstCharIndexFromLine(0);
             commandsRichTextBox.SelectionLength = commandsRichTextBox.TextLength;
             commandsRichTextBox.SelectionBackColor = color;
+        }
+
+        private void ChangeCommandFontColor(int i, Color color)
+        {
+            commandsRichTextBox.SelectionStart = commandsRichTextBox.GetFirstCharIndexFromLine(i+1);
+            commandsRichTextBox.SelectionLength = commandsRichTextBox.Lines[i+1].Length;
+            commandsRichTextBox.SelectionColor = color;
         }
 
         private void LoadActionsIntoMemory(object sender, EventArgs e)
