@@ -295,7 +295,7 @@
             this.ADDRadioButton.Tag = "0";
             this.ADDRadioButton.Text = "ADD";
             this.ADDRadioButton.UseVisualStyleBackColor = true;
-            this.ADDRadioButton.CheckedChanged += new System.EventHandler(this.ChangeInitialValue);
+            this.ADDRadioButton.CheckedChanged += new System.EventHandler(this.ChooseInstructionTypeViaRadioButton);
             // 
             // RegisterRadioButton
             // 
@@ -310,7 +310,7 @@
             this.RegisterRadioButton.Tag = "0";
             this.RegisterRadioButton.Text = "Rejestrowy";
             this.RegisterRadioButton.UseVisualStyleBackColor = true;
-            this.RegisterRadioButton.CheckedChanged += new System.EventHandler(this.AdressingType);
+            this.RegisterRadioButton.CheckedChanged += new System.EventHandler(this.ChooseAdressingTypeViaRadioButton);
             // 
             // ImmediateRadioButton
             // 
@@ -324,7 +324,7 @@
             this.ImmediateRadioButton.Tag = "1";
             this.ImmediateRadioButton.Text = "Natychmiastowy";
             this.ImmediateRadioButton.UseVisualStyleBackColor = true;
-            this.ImmediateRadioButton.CheckedChanged += new System.EventHandler(this.AdressingType);
+            this.ImmediateRadioButton.CheckedChanged += new System.EventHandler(this.ChooseAdressingTypeViaRadioButton);
             // 
             // AdressingTypeGroup
             // 
@@ -364,8 +364,8 @@
             this.MOVRadioButton.Tag = "2";
             this.MOVRadioButton.Text = "MOV";
             this.MOVRadioButton.UseVisualStyleBackColor = true;
-            this.MOVRadioButton.CheckedChanged += new System.EventHandler(this.ChangeInitialValue);
-            this.MOVRadioButton.Click += new System.EventHandler(this.ChangeInitialValue);
+            this.MOVRadioButton.CheckedChanged += new System.EventHandler(this.ChooseInstructionTypeViaRadioButton);
+            this.MOVRadioButton.Click += new System.EventHandler(this.ChooseInstructionTypeViaRadioButton);
             // 
             // SUBRadioButton
             // 
@@ -378,7 +378,7 @@
             this.SUBRadioButton.Tag = "1";
             this.SUBRadioButton.Text = "SUB";
             this.SUBRadioButton.UseVisualStyleBackColor = true;
-            this.SUBRadioButton.CheckedChanged += new System.EventHandler(this.ChangeInitialValue);
+            this.SUBRadioButton.CheckedChanged += new System.EventHandler(this.ChooseInstructionTypeViaRadioButton);
             // 
             // DestinationLabel
             // 
@@ -415,8 +415,8 @@
             this.DXRadioButton.Tag = "3";
             this.DXRadioButton.Text = "DX";
             this.DXRadioButton.UseVisualStyleBackColor = true;
-            this.DXRadioButton.CheckedChanged += new System.EventHandler(this.CheckDestinationRegister);
-            this.DXRadioButton.Click += new System.EventHandler(this.CheckDestinationRegister);
+            this.DXRadioButton.CheckedChanged += new System.EventHandler(this.ChooseDestinationRegisterViaRadioButton);
+            this.DXRadioButton.Click += new System.EventHandler(this.ChooseDestinationRegisterViaRadioButton);
             // 
             // CXRadioButton
             // 
@@ -430,8 +430,8 @@
             this.CXRadioButton.Tag = "2";
             this.CXRadioButton.Text = "CX";
             this.CXRadioButton.UseVisualStyleBackColor = true;
-            this.CXRadioButton.CheckedChanged += new System.EventHandler(this.CheckDestinationRegister);
-            this.CXRadioButton.Click += new System.EventHandler(this.CheckDestinationRegister);
+            this.CXRadioButton.CheckedChanged += new System.EventHandler(this.ChooseDestinationRegisterViaRadioButton);
+            this.CXRadioButton.Click += new System.EventHandler(this.ChooseDestinationRegisterViaRadioButton);
             // 
             // BXRadioButton
             // 
@@ -445,8 +445,8 @@
             this.BXRadioButton.Tag = "1";
             this.BXRadioButton.Text = "BX";
             this.BXRadioButton.UseVisualStyleBackColor = true;
-            this.BXRadioButton.CheckedChanged += new System.EventHandler(this.CheckDestinationRegister);
-            this.BXRadioButton.Click += new System.EventHandler(this.CheckDestinationRegister);
+            this.BXRadioButton.CheckedChanged += new System.EventHandler(this.ChooseDestinationRegisterViaRadioButton);
+            this.BXRadioButton.Click += new System.EventHandler(this.ChooseDestinationRegisterViaRadioButton);
             // 
             // AXRadioButton
             // 
@@ -461,8 +461,8 @@
             this.AXRadioButton.Tag = "0";
             this.AXRadioButton.Text = "AX";
             this.AXRadioButton.UseVisualStyleBackColor = true;
-            this.AXRadioButton.CheckedChanged += new System.EventHandler(this.CheckDestinationRegister);
-            this.AXRadioButton.Click += new System.EventHandler(this.CheckDestinationRegister);
+            this.AXRadioButton.CheckedChanged += new System.EventHandler(this.ChooseDestinationRegisterViaRadioButton);
+            this.AXRadioButton.Click += new System.EventHandler(this.ChooseDestinationRegisterViaRadioButton);
             // 
             // ValueLabel
             // 
@@ -501,7 +501,7 @@
             this.StartActionButton.TabIndex = 32;
             this.StartActionButton.Text = "Wykonaj";
             this.StartActionButton.UseVisualStyleBackColor = true;
-            this.StartActionButton.Click += new System.EventHandler(this.StartActionButton_Click);
+            this.StartActionButton.Click += new System.EventHandler(this.ExecuteAction);
             // 
             // SourceLabel
             // 
@@ -538,7 +538,7 @@
             this.radioButton1.Tag = "3";
             this.radioButton1.Text = "DX";
             this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.CheckSourceRegister);
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.ChooseSourceRegisterViaRadioButton);
             // 
             // radioButton2
             // 
@@ -552,7 +552,7 @@
             this.radioButton2.Tag = "2";
             this.radioButton2.Text = "CX";
             this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.CheckSourceRegister);
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.ChooseSourceRegisterViaRadioButton);
             // 
             // radioButton3
             // 
@@ -566,7 +566,7 @@
             this.radioButton3.Tag = "1";
             this.radioButton3.Text = "BX";
             this.radioButton3.UseVisualStyleBackColor = true;
-            this.radioButton3.CheckedChanged += new System.EventHandler(this.CheckSourceRegister);
+            this.radioButton3.CheckedChanged += new System.EventHandler(this.ChooseSourceRegisterViaRadioButton);
             // 
             // radioButton4
             // 
@@ -581,7 +581,7 @@
             this.radioButton4.Tag = "0";
             this.radioButton4.Text = "AX";
             this.radioButton4.UseVisualStyleBackColor = true;
-            this.radioButton4.CheckedChanged += new System.EventHandler(this.CheckSourceRegister);
+            this.radioButton4.CheckedChanged += new System.EventHandler(this.ChooseSourceRegisterViaRadioButton);
             // 
             // commandsTextBox
             // 
@@ -601,7 +601,7 @@
             this.loadButton.TabIndex = 35;
             this.loadButton.Text = "Załaduj";
             this.loadButton.UseVisualStyleBackColor = true;
-            this.loadButton.Click += new System.EventHandler(this.loadButton_Click);
+            this.loadButton.Click += new System.EventHandler(this.LoadActionsIntoMemory);
             // 
             // clearButton
             // 
@@ -611,7 +611,7 @@
             this.clearButton.TabIndex = 36;
             this.clearButton.Text = "Wyczyść";
             this.clearButton.UseVisualStyleBackColor = true;
-            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
+            this.clearButton.Click += new System.EventHandler(this.ClearCommands);
             // 
             // Form1
             // 
