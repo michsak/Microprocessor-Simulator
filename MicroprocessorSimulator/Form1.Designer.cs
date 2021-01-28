@@ -81,6 +81,8 @@
             this.commandsRichTextBox = new System.Windows.Forms.RichTextBox();
             this.readFromFileButton = new System.Windows.Forms.Button();
             this.saveToFileButton = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.AdressingTypeGroup.SuspendLayout();
             this.IntructionGroupBox.SuspendLayout();
             this.DGroupBox.SuspendLayout();
@@ -476,9 +478,9 @@
             // 
             // StartActionButton
             // 
-            this.StartActionButton.Location = new System.Drawing.Point(352, 640);
+            this.StartActionButton.Location = new System.Drawing.Point(352, 630);
             this.StartActionButton.Name = "StartActionButton";
-            this.StartActionButton.Size = new System.Drawing.Size(190, 40);
+            this.StartActionButton.Size = new System.Drawing.Size(220, 40);
             this.StartActionButton.TabIndex = 32;
             this.StartActionButton.Text = "Wykonaj";
             this.StartActionButton.UseVisualStyleBackColor = true;
@@ -560,7 +562,7 @@
             // 
             // loadButton
             // 
-            this.loadButton.Location = new System.Drawing.Point(15, 640);
+            this.loadButton.Location = new System.Drawing.Point(15, 630);
             this.loadButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(300, 40);
@@ -571,10 +573,10 @@
             // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(596, 640);
+            this.clearButton.Location = new System.Drawing.Point(606, 630);
             this.clearButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.clearButton.Name = "clearButton";
-            this.clearButton.Size = new System.Drawing.Size(190, 40);
+            this.clearButton.Size = new System.Drawing.Size(220, 40);
             this.clearButton.TabIndex = 36;
             this.clearButton.Text = "Wyczyść";
             this.clearButton.UseVisualStyleBackColor = true;
@@ -582,7 +584,7 @@
             // 
             // CommandsExecutingModeLabel
             // 
-            this.CommandsExecutingModeLabel.Location = new System.Drawing.Point(349, 594);
+            this.CommandsExecutingModeLabel.Location = new System.Drawing.Point(349, 584);
             this.CommandsExecutingModeLabel.Name = "CommandsExecutingModeLabel";
             this.CommandsExecutingModeLabel.Size = new System.Drawing.Size(191, 23);
             this.CommandsExecutingModeLabel.TabIndex = 37;
@@ -619,7 +621,7 @@
             // 
             this.CommandExecutingOrderPanel.Controls.Add(this.stepByStepRadioButton);
             this.CommandExecutingOrderPanel.Controls.Add(this.totalRadioButton);
-            this.CommandExecutingOrderPanel.Location = new System.Drawing.Point(572, 591);
+            this.CommandExecutingOrderPanel.Location = new System.Drawing.Point(602, 581);
             this.CommandExecutingOrderPanel.Name = "CommandExecutingOrderPanel";
             this.CommandExecutingOrderPanel.Size = new System.Drawing.Size(214, 26);
             this.CommandExecutingOrderPanel.TabIndex = 39;
@@ -631,33 +633,39 @@
             this.commandsRichTextBox.Name = "commandsRichTextBox";
             this.commandsRichTextBox.ReadOnly = true;
             this.commandsRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.commandsRichTextBox.Size = new System.Drawing.Size(434, 506);
+            this.commandsRichTextBox.Size = new System.Drawing.Size(474, 509);
             this.commandsRichTextBox.TabIndex = 40;
-            this.commandsRichTextBox.Text = " ";
+            this.commandsRichTextBox.Text = "";
             // 
             // readFromFileButton
             // 
-            this.readFromFileButton.Location = new System.Drawing.Point(352, 531);
+            this.readFromFileButton.Location = new System.Drawing.Point(606, 527);
             this.readFromFileButton.Name = "readFromFileButton";
-            this.readFromFileButton.Size = new System.Drawing.Size(190, 30);
+            this.readFromFileButton.Size = new System.Drawing.Size(220, 30);
             this.readFromFileButton.TabIndex = 41;
             this.readFromFileButton.Text = "Wczytaj";
             this.readFromFileButton.UseVisualStyleBackColor = true;
+            this.readFromFileButton.Click += new System.EventHandler(this.ReadFromFile);
             // 
             // saveToFileButton
             // 
-            this.saveToFileButton.Location = new System.Drawing.Point(596, 531);
+            this.saveToFileButton.Location = new System.Drawing.Point(352, 527);
             this.saveToFileButton.Name = "saveToFileButton";
-            this.saveToFileButton.Size = new System.Drawing.Size(190, 30);
+            this.saveToFileButton.Size = new System.Drawing.Size(220, 30);
             this.saveToFileButton.TabIndex = 42;
             this.saveToFileButton.Text = "Zapisz";
             this.saveToFileButton.UseVisualStyleBackColor = true;
+            this.saveToFileButton.Click += new System.EventHandler(this.SaveToFile);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(808, 699);
+            this.ClientSize = new System.Drawing.Size(845, 687);
             this.Controls.Add(this.saveToFileButton);
             this.Controls.Add(this.readFromFileButton);
             this.Controls.Add(this.commandsRichTextBox);
@@ -769,6 +777,8 @@
         private System.Windows.Forms.RichTextBox commandsRichTextBox;
         private System.Windows.Forms.Button readFromFileButton;
         private System.Windows.Forms.Button saveToFileButton;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

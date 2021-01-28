@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,26 +14,30 @@ using System.Windows.Forms;
 //DESTINATION IS PLACE WHICH IS ALWAYS THE DESTINATION OF COMMAND
 
 //TODO
-//save to file, read from file, frontend, start registers value not always zero
+//read from file,start registers value not always zero
 //max number of commands
+//frontend
 
 namespace MicroprocessorSimulator
 {
     public partial class Form1 : Form
     {
-        private List<TextBox> textBoxes = new List<TextBox>();
+        //current choosen type and commands variables
         private int currentAddressingType;
         private int currentInstructionType;
         private int currentDestinationType;
         private int currentSourceType;
         private int currentCommandsExecutingType;
-        private Int16[] registers = { 0, 0, 0, 0 };
-        private int commandNumber = 0;
         private int currentExecutingCommand = 0;
+        private int commandNumber = 0;
 
+        //color variables
         private readonly Color backExecutedCommandsColor = Color.LightSlateGray;
         private readonly Color backCommandBoxColor = Color.Cornsilk;
 
+        //registers and whole instruction content holders
+        private Int16[] registers = { 0, 0, 0, 0 };
+        private List<TextBox> textBoxes = new List<TextBox>();
         private Dictionary<int, string> addresingTypeDic = new Dictionary<int, string>();
         private Dictionary<int, string> instructionTypeDic = new Dictionary<int, string>();
         private Dictionary<int, string> destinationTypeDic = new Dictionary<int, string>();
@@ -194,6 +199,51 @@ namespace MicroprocessorSimulator
             currentCommandsExecutingType = int.Parse(radioButton.Tag.ToString());
         }
 
+        private void SaveToFile(object sender, EventArgs e)
+        {
+            saveFileDialog1.CheckFileExists = false;
+            saveFileDialog1.Filter = "Text files (*.txt)|*.txt";
+            saveFileDialog1.FileName = "commands";
+            saveFileDialog1.ShowDialog();
+            string filepathWithFileName = saveFileDialog1.FileName;    //CREATE SEPERATE CLASS FOR FILE READING
+            string content = commandsRichTextBox.Text;
+
+            SaveToFileWithoutRepetition(filepathWithFileName, content);
+        }
+
+        private void SaveToFileWithoutRepetition(string filepathTotal, string content)
+        {
+            try
+            {
+                System.IO.File.WriteAllText(filepathTotal, content);
+            }
+            catch (System.UnauthorizedAccessException)
+            {
+                filepathTotal = @"C:\\Users\Public\\";
+                System.IO.File.WriteAllText(filepathTotal, content);
+            }
+        }
+
+        private void ReadFromFile(object sender, EventArgs e)
+        {
+            //TODO
+            /*string command = "";
+            int value = currentAddressingType == (int)AdressingTypes.REG ? registers[currentSourceType] : (Int16)numericBox.Value;   //THERE WAS A MISTAKE --> sourcetype was always zero
+            string sourceTypeTextBox = currentAddressingType == (int)AdressingTypes.IMM ? "" : $"{sourceTypeDic[currentSourceType]} ";
+
+            registersCommands.Add(new int[4] { currentAddressingType, currentInstructionType, currentDestinationType, value });
+            command = $"{commandNumber}. {addresingTypeDic[currentAddressingType]} {instructionTypeDic[currentInstructionType]} {sourceTypeTextBox}" +
+                $"{destinationTypeDic[currentDestinationType]} {numericBox.Value};";
+
+            //command = commandNumber == 0 ? command : (" " + command);
+
+            commandsRichTextBox.AppendText(command);
+            commandsRichTextBox.AppendText(Environment.NewLine);
+            commandNumber++;*/
+
+            //registersCommands.Add(new int[4] { currentAddressingType, currentInstructionType, currentDestinationType, value });
+        }
+
         private void ExecuteAction(object sender, EventArgs e)
         {
             if (currentCommandsExecutingType == (int)CommandExecutingType.TOTAL)
@@ -287,8 +337,6 @@ namespace MicroprocessorSimulator
             registersCommands.Add(new int[4] { currentAddressingType, currentInstructionType, currentDestinationType, value });
             command = $"{commandNumber}. {addresingTypeDic[currentAddressingType]} {instructionTypeDic[currentInstructionType]} {sourceTypeTextBox}"+
                 $"{destinationTypeDic[currentDestinationType]} {numericBox.Value};";
-
-            command = commandNumber == 0 ? command : (" " + command);
 
             commandsRichTextBox.AppendText(command);
             commandsRichTextBox.AppendText(Environment.NewLine);
