@@ -14,8 +14,9 @@ using System.Windows.Forms;
 //DESTINATION IS PLACE WHICH IS ALWAYS THE DESTINATION OF COMMAND
 
 //TODO
-//read from file,start registers value not always zero
+//read from file to be ended,start registers value not always zero
 //max number of commands
+//before read from file reset nb of comands and all connected things
 //frontend
 
 namespace MicroprocessorSimulator
@@ -205,13 +206,13 @@ namespace MicroprocessorSimulator
             saveFileDialog1.Filter = "Text files (*.txt)|*.txt";
             saveFileDialog1.FileName = "commands";
             saveFileDialog1.ShowDialog();
-            string filepathWithFileName = saveFileDialog1.FileName;    //CREATE SEPERATE CLASS FOR FILE READING
+            string filepathWithFileName = saveFileDialog1.FileName;    //CREATE SEPERATE CLASS FOR FILE SAVING
             string content = commandsRichTextBox.Text;
 
-            SaveToFileWithoutRepetition(filepathWithFileName, content);
+            WriteIntoTextFile(filepathWithFileName, content);
         }
 
-        private void SaveToFileWithoutRepetition(string filepathTotal, string content)
+        private void WriteIntoTextFile(string filepathTotal, string content)
         {
             try
             {
@@ -226,22 +227,51 @@ namespace MicroprocessorSimulator
 
         private void ReadFromFile(object sender, EventArgs e)
         {
-            //TODO
-            /*string command = "";
-            int value = currentAddressingType == (int)AdressingTypes.REG ? registers[currentSourceType] : (Int16)numericBox.Value;   //THERE WAS A MISTAKE --> sourcetype was always zero
-            string sourceTypeTextBox = currentAddressingType == (int)AdressingTypes.IMM ? "" : $"{sourceTypeDic[currentSourceType]} ";
+            //if wrong than appears error form
+            //why source is not taken into consideration(?)
+            openFileDialog1.CheckFileExists = false;
+            openFileDialog1.Filter = "Text files (*.txt)|*.txt";
+            openFileDialog1.FileName = "";
+            openFileDialog1.ShowDialog();
+            string filepath = openFileDialog1.FileName;    //CREATE SEPERATE CLASS FOR FILE READING
 
-            registersCommands.Add(new int[4] { currentAddressingType, currentInstructionType, currentDestinationType, value });
-            command = $"{commandNumber}. {addresingTypeDic[currentAddressingType]} {instructionTypeDic[currentInstructionType]} {sourceTypeTextBox}" +
-                $"{destinationTypeDic[currentDestinationType]} {numericBox.Value};";
+            string allCommands = System.IO.File.ReadAllText(filepath);
+            commandsRichTextBox.Text = allCommands;
+            
+            for (int i=0; i<commandsRichTextBox.Lines.Count()-1; i++)   //-1 cause last line in this formatting method always empty
+            {
+                string currentCommand = commandsRichTextBox.Lines[i];
+                string[] seperateCommandComponents = currentCommand.Split(' ');
 
-            //command = commandNumber == 0 ? command : (" " + command);
+                int adressingType = changeTypesToInt(seperateCommandComponents[1]);    // if register addressing type source register should be taken into consideration
+                int instructionType = changeTypesToInt(seperateCommandComponents[2]);
+                Console.WriteLine(seperateCommandComponents[seperateCommandComponents.Length - 2]);
+                int destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length-2]);   //if register addresing type than 4
+                int value = int.Parse(seperateCommandComponents[seperateCommandComponents.Length-1].Replace(";", string.Empty));
+                Console.WriteLine(adressingType +" " + instructionType + " "+ destinationType + " "+ value);
 
-            commandsRichTextBox.AppendText(command);
-            commandsRichTextBox.AppendText(Environment.NewLine);
-            commandNumber++;*/
+                //string sourceTypeTextBox = currentAddressingType == (int)AdressingTypes.IMM ? "" : $"{sourceTypeDic[currentSourceType]} ";
+                //sourceType = CHOOSE TYPE IF ADRESSING TYPE IS ZERO
+                //registersCommands.Add(new int[4] { currentAddressingType, currentInstructionType, currentDestinationType, value };
+            }
+        }
 
-            //registersCommands.Add(new int[4] { currentAddressingType, currentInstructionType, currentDestinationType, value });
+        private int changeTypesToInt(string type)
+        {
+            var changeDict = new Dictionary<string, int>()
+            {
+                {Enum.GetName(typeof(AdressingTypes), AdressingTypes.REG), (int)AdressingTypes.REG },
+                {Enum.GetName(typeof(AdressingTypes), AdressingTypes.IMM), (int)AdressingTypes.IMM },
+                {Enum.GetName(typeof(InstructionTypes), InstructionTypes.ADD), (int)InstructionTypes.ADD },
+                {Enum.GetName(typeof(InstructionTypes), InstructionTypes.SUB), (int)InstructionTypes.SUB },
+                {Enum.GetName(typeof(InstructionTypes), InstructionTypes.MOV), (int)InstructionTypes.MOV },
+                {Enum.GetName(typeof(Registers), Registers.AX), (int)Registers.AX },
+                {Enum.GetName(typeof(Registers), Registers.BX), (int)Registers.BX },
+                {Enum.GetName(typeof(Registers), Registers.CX), (int)Registers.CX },
+                {Enum.GetName(typeof(Registers), Registers.DX), (int)Registers.DX },
+            };
+
+            return changeDict[type];
         }
 
         private void ExecuteAction(object sender, EventArgs e)
@@ -335,6 +365,7 @@ namespace MicroprocessorSimulator
             string sourceTypeTextBox = currentAddressingType == (int)AdressingTypes.IMM ? "" : $"{sourceTypeDic[currentSourceType]} ";
 
             registersCommands.Add(new int[4] { currentAddressingType, currentInstructionType, currentDestinationType, value });
+
             command = $"{commandNumber}. {addresingTypeDic[currentAddressingType]} {instructionTypeDic[currentInstructionType]} {sourceTypeTextBox}"+
                 $"{destinationTypeDic[currentDestinationType]} {numericBox.Value};";
 
