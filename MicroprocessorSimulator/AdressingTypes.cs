@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MicroprocessorSimulator
 {
-    public enum AdressingTypes
+    public enum AddressingTypes
     {
         REG,        //register
         IMM         //immediate

@@ -41,8 +41,8 @@ namespace MicroprocessorSimulator
         private List<TextBox> textBoxes = new List<TextBox>();
         private Dictionary<int, string> addresingTypeDic = new Dictionary<int, string>();
         private Dictionary<int, string> instructionTypeDic = new Dictionary<int, string>();
-        private Dictionary<int, string> destinationTypeDic = new Dictionary<int, string>();
         private Dictionary<int, string> sourceTypeDic = new Dictionary<int, string>();
+        private Dictionary<int, string> destinationTypeDic = new Dictionary<int, string>();
         private List<int[]> registersCommands = new List<int[]>();
 
 
@@ -71,8 +71,8 @@ namespace MicroprocessorSimulator
 
         private void InitializeRegisterTypeDict()
         {
-            addresingTypeDic.Add(0, Enum.GetName(typeof(AdressingTypes), AdressingTypes.REG));
-            addresingTypeDic.Add(1, Enum.GetName(typeof(AdressingTypes), AdressingTypes.IMM));
+            addresingTypeDic.Add(0, Enum.GetName(typeof(AddressingTypes), AddressingTypes.REG));
+            addresingTypeDic.Add(1, Enum.GetName(typeof(AddressingTypes), AddressingTypes.IMM));
         }
 
         private void InitializeInstructionTypeDict()
@@ -245,7 +245,6 @@ namespace MicroprocessorSimulator
 
                 int adressingType = changeTypesToInt(seperateCommandComponents[1]);    // if register addressing type source register should be taken into consideration
                 int instructionType = changeTypesToInt(seperateCommandComponents[2]);
-                Console.WriteLine(seperateCommandComponents[seperateCommandComponents.Length - 2]);
                 int destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length-2]);   //if register addresing type than 4
                 int value = int.Parse(seperateCommandComponents[seperateCommandComponents.Length-1].Replace(";", string.Empty));
                 Console.WriteLine(adressingType +" " + instructionType + " "+ destinationType + " "+ value);
@@ -260,8 +259,8 @@ namespace MicroprocessorSimulator
         {
             var changeDict = new Dictionary<string, int>()
             {
-                {Enum.GetName(typeof(AdressingTypes), AdressingTypes.REG), (int)AdressingTypes.REG },
-                {Enum.GetName(typeof(AdressingTypes), AdressingTypes.IMM), (int)AdressingTypes.IMM },
+                {Enum.GetName(typeof(AddressingTypes), AddressingTypes.REG), (int)AddressingTypes.REG },
+                {Enum.GetName(typeof(AddressingTypes), AddressingTypes.IMM), (int)AddressingTypes.IMM },
                 {Enum.GetName(typeof(InstructionTypes), InstructionTypes.ADD), (int)InstructionTypes.ADD },
                 {Enum.GetName(typeof(InstructionTypes), InstructionTypes.SUB), (int)InstructionTypes.SUB },
                 {Enum.GetName(typeof(InstructionTypes), InstructionTypes.MOV), (int)InstructionTypes.MOV },
@@ -318,23 +317,29 @@ namespace MicroprocessorSimulator
 
         private void ExecuteCurrentCommand(int i)
         {
-            Int16 registerValue = (Int16)registersCommands[i][3];
+            Int16 registerValue = (Int16)registersCommands[i][4];
+            if (registersCommands[i][0] == (int)AddressingTypes.REG)
+            {
+                registerValue = registers[registersCommands[i][2]];         // 0-ax, 1-bx, 2-cx, 3-dx
+                Console.WriteLine("doing if" + i);
+                Console.WriteLine("Register valyue " + registers[registersCommands[i][2]] + "current source type " + currentSourceType);
+            }
 
             switch (registersCommands[i][1])
             {
                 case 0:
-                    registers[registersCommands[i][2]] += registerValue;
+                    registers[registersCommands[i][3]] += registerValue;
                     break;
                 case 1:
-                    registers[registersCommands[i][2]] -= registerValue;
+                    registers[registersCommands[i][3]] -= registerValue;
                     break;
                 case 2:
-                    registers[registersCommands[i][2]] = registerValue;
+                    registers[registersCommands[i][3]] = registerValue;
                     break;
             }
 
-            string stringBytes = ConvertToBites(registers[registersCommands[i][2]]);
-            DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registersCommands[i][2]], textBoxes[2 * registersCommands[i][2] + 1]);
+            string stringBytes = ConvertToBites(registers[registersCommands[i][3]]);
+            DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registersCommands[i][3]], textBoxes[2 * registersCommands[i][3] + 1]);
         }
 
         private void ChangeCommandsBackgroundColor(int i, Color color)
@@ -361,13 +366,32 @@ namespace MicroprocessorSimulator
         private void LoadActionsIntoMemory(object sender, EventArgs e)
         {
             string command = "";
-            int value = currentAddressingType == (int)AdressingTypes.REG ? registers[currentSourceType] : (Int16)numericBox.Value;   //THERE WAS A MISTAKE --> sourcetype was always zero
-            string sourceTypeTextBox = currentAddressingType == (int)AdressingTypes.IMM ? "" : $"{sourceTypeDic[currentSourceType]} ";
+            int currentSourceType = 0;
+            string sourceTypeInText = "";
+            string destinationTypeInText = "";
+            int value = 0;
 
-            registersCommands.Add(new int[4] { currentAddressingType, currentInstructionType, currentDestinationType, value });
+            if (currentAddressingType == (int)AddressingTypes.REG)
+            {
+                currentSourceType = this.currentSourceType;
+                sourceTypeInText = sourceTypeDic[this.currentSourceType];
+                destinationTypeInText = $" {destinationTypeDic[currentDestinationType]}";
+            }
+            else
+            {
+                value = (Int16)numericBox.Value;
+                currentSourceType = currentAddressingType;      //actually null is enough
+                destinationTypeInText = $"{destinationTypeDic[currentDestinationType]}";
+            }
 
-            command = $"{commandNumber}. {addresingTypeDic[currentAddressingType]} {instructionTypeDic[currentInstructionType]} {sourceTypeTextBox}"+
-                $"{destinationTypeDic[currentDestinationType]} {numericBox.Value};";
+            string valueInText = value.ToString().Replace("0", String.Empty);
+
+            Console.WriteLine(value);
+
+            registersCommands.Add(new int[5] { currentAddressingType, currentInstructionType, currentSourceType, currentDestinationType, value }); //as class would look better
+
+            command = $"{commandNumber}. {addresingTypeDic[currentAddressingType]} {instructionTypeDic[currentInstructionType]} {sourceTypeInText}"+
+                $"{destinationTypeInText} {valueInText};";
 
             commandsRichTextBox.AppendText(command);
             commandsRichTextBox.AppendText(Environment.NewLine);
