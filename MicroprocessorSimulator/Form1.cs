@@ -12,12 +12,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-//DESTINATION IS PLACE WHICH IS ALWAYS THE DESTINATION OF COMMAND
-
 //TODO
-//read from file to be ended,start registers value not always zero
+//start registers value not always zero
 //max number of commands
-//before read from file reset nb of comands and all connected things
+//add to registers as class
 //frontend
 
 namespace MicroprocessorSimulator
@@ -31,7 +29,7 @@ namespace MicroprocessorSimulator
         private int currentSourceType;
         private int currentCommandsExecutingType;
         private int currentExecutingCommand = 0;
-        private int commandNumber = 0;
+        private int totalCommendsNumber = 0;
 
         //color variables
         private readonly Color backExecutedCommandsColor = Color.LightSlateGray;
@@ -210,23 +208,9 @@ namespace MicroprocessorSimulator
             saveFileDialog1.Filter = "Text files (*.txt)|*.txt";
             saveFileDialog1.FileName = "commands";
             saveFileDialog1.ShowDialog();
-            string filepathWithFileName = saveFileDialog1.FileName;    //CREATE SEPERATE CLASS FOR FILE SAVING
-            string content = commandsRichTextBox.Text;
 
-            WriteIntoTextFile(filepathWithFileName, content);
-        }
-
-        private void WriteIntoTextFile(string filepathTotal, string content)
-        {
-            try
-            {
-                System.IO.File.WriteAllText(filepathTotal, content);
-            }
-            catch (System.UnauthorizedAccessException)
-            {
-                filepathTotal = @"C:\\Users\Public\\";
-                System.IO.File.WriteAllText(filepathTotal, content);
-            }
+            FileWriter fileWriter = new FileWriter(saveFileDialog1.FileName, commandsRichTextBox.Text);
+            fileWriter.WriteToFile();
         }
 
         private void ReadFromFile(object sender, EventArgs e)
@@ -236,9 +220,9 @@ namespace MicroprocessorSimulator
             openFileDialog1.Filter = "Text files (*.txt)|*.txt";
             openFileDialog1.FileName = "";
             openFileDialog1.ShowDialog();
-            string filepath = openFileDialog1.FileName;    //CREATE SEPERATE CLASS FOR FILE READING
-            string allCommands = System.IO.File.ReadAllText(filepath);
-            commandsRichTextBox.Text = allCommands;
+
+            FileReader fileReader = new FileReader(openFileDialog1.FileName);
+            commandsRichTextBox.Text = fileReader.ReturnText();
 
             string regexPattern = @"\d+.\s\b(IMM|REG)\b\s\b(ADD|SUB|MOV)\b\s\b(AX|BX|CX|DX)\b\s";   //to be improved
             Regex regex = new Regex(regexPattern);
@@ -246,51 +230,51 @@ namespace MicroprocessorSimulator
 
             if (firstLineIsValid)
             {
-                for (int i = 0; i < commandsRichTextBox.Lines.Count() - 1; i++)   //-1 cause last line in this formatting method always empty
-                    {
-                        string currentCommand = commandsRichTextBox.Lines[i];
-                        string[] seperateCommandComponents = currentCommand.Split(' ');
-
-                        try
-                        {
-                            bool isAnyLineBad = !regex.IsMatch(commandsRichTextBox.Lines[i]);
-                            if (isAnyLineBad) { break; }
-                            int adressingType = changeTypesToInt(seperateCommandComponents[1]);
-                            int instructionType = changeTypesToInt(seperateCommandComponents[2]);
-                            int sourceType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
-                            int destinationType = 0;
-                            int value = 0;
-
-                            Console.WriteLine(adressingType + " " + instructionType);
-
-                            if (adressingType == (int)AddressingTypes.REG)
-                            {
-                                destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
-                            }
-                            else
-                            {
-                                destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
-                                value = int.Parse(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
-                            }
-
-                            Console.WriteLine(adressingType + " " + instructionType + " source type " + +sourceType + " destination type " + destinationType + " value " + value);
-                    
-                            registersCommands.Add(new int[5] { adressingType, instructionType, sourceType, destinationType, value });
-                            commandNumber++;
-                        }
-                        catch
-                        {
-                            ErrorForm errorForm = new ErrorForm();
-                            errorForm.ShowDialog();
-                        }
-                    }
-
-                    this.loadButton.Enabled = false;
+                IterateThroughAllLines(regex);
+                this.loadButton.Enabled = false;
             }
             else
             {
                 string errorMessage = "Uzytkowniku, wybierz poprawny plik!";
                 commandsRichTextBox.Text = errorMessage;
+            }
+        }
+
+        private void IterateThroughAllLines(Regex regex)
+        {
+            for (int i = 0; i < commandsRichTextBox.Lines.Count() - 1; i++)   //-1 cause last line in this formatting method always empty
+            {
+                string currentCommand = commandsRichTextBox.Lines[i];
+                string[] seperateCommandComponents = currentCommand.Split(' ');
+
+                try
+                {
+                    bool isAnyLineBad = !regex.IsMatch(commandsRichTextBox.Lines[i]);
+                    if (isAnyLineBad) { break; }
+                    int adressingType = changeTypesToInt(seperateCommandComponents[1]);
+                    int instructionType = changeTypesToInt(seperateCommandComponents[2]);
+                    int sourceType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
+                    int destinationType = 0;
+                    int value = 0;
+
+                    if (adressingType == (int)AddressingTypes.REG)
+                    {
+                        destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
+                    }
+                    else
+                    {
+                        destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
+                        value = int.Parse(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
+                    }
+
+                    registersCommands.Add(new int[5] { adressingType, instructionType, sourceType, destinationType, value });
+                    totalCommendsNumber++;
+                }
+                catch
+                {
+                    ErrorForm errorForm = new ErrorForm();
+                    errorForm.ShowDialog();
+                }
             }
         }
 
@@ -326,14 +310,14 @@ namespace MicroprocessorSimulator
                 ChangeAllTextBacgroundColor(backCommandBoxColor);
             }
 
-            else if(currentExecutingCommand < commandNumber && currentCommandsExecutingType == (int)CommandExecutingType.STEP_BY_STEP)
+            else if(currentExecutingCommand < totalCommendsNumber && currentCommandsExecutingType == (int)CommandExecutingType.STEP_BY_STEP)
             {
                 ExecuteCurrentCommand(currentExecutingCommand);
                 ChangeCommandFontColor(currentExecutingCommand-1, Color.Black);     //change color back to black
                 ChangeCommandsBackgroundColor(currentExecutingCommand, backExecutedCommandsColor);
                 currentExecutingCommand++;
 
-                if (currentExecutingCommand >= commandNumber)
+                if (currentExecutingCommand >= totalCommendsNumber)
                 {
                     currentExecutingCommand = 0;
                     System.Threading.Thread.Sleep(300);     //sleep for 300ms to enable user see performed action
@@ -424,11 +408,16 @@ namespace MicroprocessorSimulator
                 valueInText = value.ToString();
             }
 
-            registersCommands.Add(new int[5] { currentAddressingType, currentInstructionType, currentSourceType, currentDestinationType, value }); //as class would look better
-
-            command = $"{commandNumber}. {addresingTypeDic[currentAddressingType]} {instructionTypeDic[currentInstructionType]} {sourceTypeInText}"+
+            command = $"{totalCommendsNumber}. {addresingTypeDic[currentAddressingType]} {instructionTypeDic[currentInstructionType]} {sourceTypeInText}" +
                 $"{destinationTypeInText} {valueInText};";
+            WriteCommandIntoTextbox(command, valueInText);
 
+            registersCommands.Add(new int[5] { currentAddressingType, currentInstructionType, currentSourceType, currentDestinationType, value }); //would better look as class
+            totalCommendsNumber++;
+        }
+
+        private void WriteCommandIntoTextbox(string command, string valueInText)
+        {
             if (valueInText.Equals(String.Empty))
             {
                 command = command.Substring(0, command.Length - 2) + ";";
@@ -436,7 +425,6 @@ namespace MicroprocessorSimulator
 
             commandsRichTextBox.AppendText(command);
             commandsRichTextBox.AppendText(Environment.NewLine);
-            commandNumber++;
         }
 
         private void ClearCommands(object sender, EventArgs e)
@@ -447,7 +435,7 @@ namespace MicroprocessorSimulator
         private void ClearTextBoxResetCommandNumberAndDisableButton()
         {
             commandsRichTextBox.Clear();
-            commandNumber = 0;
+            totalCommendsNumber = 0;
             registersCommands.Clear();
             currentExecutingCommand = 0;
             this.loadButton.Enabled = true;
