@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -49,6 +50,9 @@ namespace MicroprocessorSimulator
         public Form1()
         {
             InitializeComponent();
+            FormBorderStyle = FormBorderStyle.FixedSingle; //restrict from resizing
+            MaximizeBox = false;  //disable maximize button
+
             InitializeTextBoxList();
             FillRegistersWithZeros();
             InitializeRegisterTypeDict();
@@ -227,58 +231,66 @@ namespace MicroprocessorSimulator
 
         private void ReadFromFile(object sender, EventArgs e)
         {
-            //if wrong than appears error form
+            ClearTextBoxResetCommandNumberAndDisableButton();
             openFileDialog1.CheckFileExists = false;
             openFileDialog1.Filter = "Text files (*.txt)|*.txt";
             openFileDialog1.FileName = "";
             openFileDialog1.ShowDialog();
             string filepath = openFileDialog1.FileName;    //CREATE SEPERATE CLASS FOR FILE READING
+            string allCommands = System.IO.File.ReadAllText(filepath);
+            commandsRichTextBox.Text = allCommands;
 
-            try
+            string regexPattern = @"\d+.\s\b(IMM|REG)\b\s\b(ADD|SUB|MOV)\b\s\b(AX|BX|CX|DX)\b\s";   //to be improved
+            Regex regex = new Regex(regexPattern);
+            bool firstLineIsValid = regex.IsMatch(commandsRichTextBox.Lines[0]);
+
+            if (firstLineIsValid)
             {
-                string allCommands = System.IO.File.ReadAllText(filepath);
-                commandsRichTextBox.Text = allCommands;
-
                 for (int i = 0; i < commandsRichTextBox.Lines.Count() - 1; i++)   //-1 cause last line in this formatting method always empty
-                {
-                    string currentCommand = commandsRichTextBox.Lines[i];
-                    string[] seperateCommandComponents = currentCommand.Split(' ');
-                    try
-                    { 
-                        int adressingType = changeTypesToInt(seperateCommandComponents[1]);
-                        int instructionType = changeTypesToInt(seperateCommandComponents[2]);
-                        int sourceType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
-                        int destinationType = 0;
-                        int value = 0;
-
-                        Console.WriteLine(adressingType + " " + instructionType);
-
-                        if (adressingType == (int)AddressingTypes.REG)
-                        {
-                            destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
-                        }
-                        else
-                        {
-                            destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
-                            value = int.Parse(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
-                        }
-
-                        Console.WriteLine(adressingType + " " + instructionType + " source type " + +sourceType + " destination type " + destinationType + " value " + value);
-                    
-                        registersCommands.Add(new int[5] { adressingType, instructionType, sourceType, destinationType, value });
-                        commandNumber++;
-                    }
-                    catch
                     {
-                        Console.WriteLine("error");
-                    }
-                }
+                        string currentCommand = commandsRichTextBox.Lines[i];
+                        string[] seperateCommandComponents = currentCommand.Split(' ');
 
-                this.loadButton.Enabled = false;
+                        try
+                        {
+                            bool isAnyLineBad = !regex.IsMatch(commandsRichTextBox.Lines[i]);
+                            if (isAnyLineBad) { break; }
+                            int adressingType = changeTypesToInt(seperateCommandComponents[1]);
+                            int instructionType = changeTypesToInt(seperateCommandComponents[2]);
+                            int sourceType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
+                            int destinationType = 0;
+                            int value = 0;
+
+                            Console.WriteLine(adressingType + " " + instructionType);
+
+                            if (adressingType == (int)AddressingTypes.REG)
+                            {
+                                destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
+                            }
+                            else
+                            {
+                                destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
+                                value = int.Parse(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
+                            }
+
+                            Console.WriteLine(adressingType + " " + instructionType + " source type " + +sourceType + " destination type " + destinationType + " value " + value);
+                    
+                            registersCommands.Add(new int[5] { adressingType, instructionType, sourceType, destinationType, value });
+                            commandNumber++;
+                        }
+                        catch
+                        {
+                            ErrorForm errorForm = new ErrorForm();
+                            errorForm.ShowDialog();
+                        }
+                    }
+
+                    this.loadButton.Enabled = false;
             }
-            catch
+            else
             {
-                Console.WriteLine("Error choose proper file");
+                string errorMessage = "Uzytkowniku, wybierz poprawny plik!";
+                commandsRichTextBox.Text = errorMessage;
             }
         }
 
@@ -428,6 +440,11 @@ namespace MicroprocessorSimulator
         }
 
         private void ClearCommands(object sender, EventArgs e)
+        {
+            ClearTextBoxResetCommandNumberAndDisableButton();
+        }
+
+        private void ClearTextBoxResetCommandNumberAndDisableButton()
         {
             commandsRichTextBox.Clear();
             commandNumber = 0;
