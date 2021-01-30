@@ -228,30 +228,57 @@ namespace MicroprocessorSimulator
         private void ReadFromFile(object sender, EventArgs e)
         {
             //if wrong than appears error form
-            //why source is not taken into consideration(?)
             openFileDialog1.CheckFileExists = false;
             openFileDialog1.Filter = "Text files (*.txt)|*.txt";
             openFileDialog1.FileName = "";
             openFileDialog1.ShowDialog();
             string filepath = openFileDialog1.FileName;    //CREATE SEPERATE CLASS FOR FILE READING
 
-            string allCommands = System.IO.File.ReadAllText(filepath);
-            commandsRichTextBox.Text = allCommands;
-            
-            for (int i=0; i<commandsRichTextBox.Lines.Count()-1; i++)   //-1 cause last line in this formatting method always empty
+            try
             {
-                string currentCommand = commandsRichTextBox.Lines[i];
-                string[] seperateCommandComponents = currentCommand.Split(' ');
+                string allCommands = System.IO.File.ReadAllText(filepath);
+                commandsRichTextBox.Text = allCommands;
 
-                int adressingType = changeTypesToInt(seperateCommandComponents[1]);    // if register addressing type source register should be taken into consideration
-                int instructionType = changeTypesToInt(seperateCommandComponents[2]);
-                int destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length-2]);   //if register addresing type than 4
-                int value = int.Parse(seperateCommandComponents[seperateCommandComponents.Length-1].Replace(";", string.Empty));
-                Console.WriteLine(adressingType +" " + instructionType + " "+ destinationType + " "+ value);
+                for (int i = 0; i < commandsRichTextBox.Lines.Count() - 1; i++)   //-1 cause last line in this formatting method always empty
+                {
+                    string currentCommand = commandsRichTextBox.Lines[i];
+                    string[] seperateCommandComponents = currentCommand.Split(' ');
+                    try
+                    { 
+                        int adressingType = changeTypesToInt(seperateCommandComponents[1]);
+                        int instructionType = changeTypesToInt(seperateCommandComponents[2]);
+                        int sourceType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
+                        int destinationType = 0;
+                        int value = 0;
 
-                //string sourceTypeTextBox = currentAddressingType == (int)AdressingTypes.IMM ? "" : $"{sourceTypeDic[currentSourceType]} ";
-                //sourceType = CHOOSE TYPE IF ADRESSING TYPE IS ZERO
-                //registersCommands.Add(new int[4] { currentAddressingType, currentInstructionType, currentDestinationType, value };
+                        Console.WriteLine(adressingType + " " + instructionType);
+
+                        if (adressingType == (int)AddressingTypes.REG)
+                        {
+                            destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
+                        }
+                        else
+                        {
+                            destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
+                            value = int.Parse(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
+                        }
+
+                        Console.WriteLine(adressingType + " " + instructionType + " source type " + +sourceType + " destination type " + destinationType + " value " + value);
+                    
+                        registersCommands.Add(new int[5] { adressingType, instructionType, sourceType, destinationType, value });
+                        commandNumber++;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("error");
+                    }
+                }
+
+                this.loadButton.Enabled = false;
+            }
+            catch
+            {
+                Console.WriteLine("Error choose proper file");
             }
         }
 
@@ -297,7 +324,7 @@ namespace MicroprocessorSimulator
                 if (currentExecutingCommand >= commandNumber)
                 {
                     currentExecutingCommand = 0;
-                    System.Threading.Thread.Sleep(300); //sleep for 300ms to enable user see performed action
+                    System.Threading.Thread.Sleep(300);     //sleep for 300ms to enable user see performed action
                     ChangeRichTextBoxBackColor();
                 }
                 else
@@ -320,9 +347,7 @@ namespace MicroprocessorSimulator
             Int16 registerValue = (Int16)registersCommands[i][4];
             if (registersCommands[i][0] == (int)AddressingTypes.REG)
             {
-                registerValue = registers[registersCommands[i][2]];         // 0-ax, 1-bx, 2-cx, 3-dx
-                Console.WriteLine("doing if" + i);
-                Console.WriteLine("Register valyue " + registers[registersCommands[i][2]] + "current source type " + currentSourceType);
+                registerValue = registers[registersCommands[i][2]];
             }
 
             switch (registersCommands[i][1])
@@ -370,28 +395,32 @@ namespace MicroprocessorSimulator
             string sourceTypeInText = "";
             string destinationTypeInText = "";
             int value = 0;
+            string valueInText = "0";
 
             if (currentAddressingType == (int)AddressingTypes.REG)
             {
                 currentSourceType = this.currentSourceType;
                 sourceTypeInText = sourceTypeDic[this.currentSourceType];
                 destinationTypeInText = $" {destinationTypeDic[currentDestinationType]}";
+                valueInText = value.ToString().Replace("0", String.Empty);
             }
             else
             {
                 value = (Int16)numericBox.Value;
                 currentSourceType = currentAddressingType;      //actually null is enough
                 destinationTypeInText = $"{destinationTypeDic[currentDestinationType]}";
+                valueInText = value.ToString();
             }
-
-            string valueInText = value.ToString().Replace("0", String.Empty);
-
-            Console.WriteLine(value);
 
             registersCommands.Add(new int[5] { currentAddressingType, currentInstructionType, currentSourceType, currentDestinationType, value }); //as class would look better
 
             command = $"{commandNumber}. {addresingTypeDic[currentAddressingType]} {instructionTypeDic[currentInstructionType]} {sourceTypeInText}"+
                 $"{destinationTypeInText} {valueInText};";
+
+            if (valueInText.Equals(String.Empty))
+            {
+                command = command.Substring(0, command.Length - 2) + ";";
+            }
 
             commandsRichTextBox.AppendText(command);
             commandsRichTextBox.AppendText(Environment.NewLine);
@@ -404,6 +433,7 @@ namespace MicroprocessorSimulator
             commandNumber = 0;
             registersCommands.Clear();
             currentExecutingCommand = 0;
+            this.loadButton.Enabled = true;
         }
     }
 }
