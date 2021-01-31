@@ -291,10 +291,10 @@
             // 
             // CleanRegistersButton
             // 
-            this.CleanRegistersButton.Location = new System.Drawing.Point(39, 212);
+            this.CleanRegistersButton.Location = new System.Drawing.Point(12, 212);
             this.CleanRegistersButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.CleanRegistersButton.Name = "CleanRegistersButton";
-            this.CleanRegistersButton.Size = new System.Drawing.Size(192, 38);
+            this.CleanRegistersButton.Size = new System.Drawing.Size(213, 38);
             this.CleanRegistersButton.TabIndex = 21;
             this.CleanRegistersButton.Text = "Wyczysc rejestry";
             this.CleanRegistersButton.UseVisualStyleBackColor = true;
@@ -512,10 +512,10 @@
             // 
             // StartActionButton
             // 
-            this.StartActionButton.Location = new System.Drawing.Point(460, 788);
+            this.StartActionButton.Location = new System.Drawing.Point(465, 788);
             this.StartActionButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.StartActionButton.Name = "StartActionButton";
-            this.StartActionButton.Size = new System.Drawing.Size(211, 50);
+            this.StartActionButton.Size = new System.Drawing.Size(234, 50);
             this.StartActionButton.TabIndex = 32;
             this.StartActionButton.Text = "Wykonaj";
             this.StartActionButton.UseVisualStyleBackColor = true;
@@ -614,7 +614,7 @@
             // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(682, 788);
+            this.clearButton.Location = new System.Drawing.Point(705, 788);
             this.clearButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(234, 50);
@@ -625,7 +625,7 @@
             // 
             // CommandsExecutingModeLabel
             // 
-            this.CommandsExecutingModeLabel.Location = new System.Drawing.Point(456, 732);
+            this.CommandsExecutingModeLabel.Location = new System.Drawing.Point(471, 734);
             this.CommandsExecutingModeLabel.Name = "CommandsExecutingModeLabel";
             this.CommandsExecutingModeLabel.Size = new System.Drawing.Size(215, 29);
             this.CommandsExecutingModeLabel.TabIndex = 37;
@@ -664,7 +664,7 @@
             // 
             this.CommandExecutingOrderPanel.Controls.Add(this.stepByStepRadioButton);
             this.CommandExecutingOrderPanel.Controls.Add(this.totalRadioButton);
-            this.CommandExecutingOrderPanel.Location = new System.Drawing.Point(689, 728);
+            this.CommandExecutingOrderPanel.Location = new System.Drawing.Point(712, 728);
             this.CommandExecutingOrderPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.CommandExecutingOrderPanel.Name = "CommandExecutingOrderPanel";
             this.CommandExecutingOrderPanel.Size = new System.Drawing.Size(227, 32);
@@ -672,19 +672,21 @@
             // 
             // commandsRichTextBox
             // 
-            this.commandsRichTextBox.BackColor = System.Drawing.Color.Cornsilk;
-            this.commandsRichTextBox.Location = new System.Drawing.Point(460, 16);
+            this.commandsRichTextBox.BackColor = System.Drawing.Color.Black;
+            this.commandsRichTextBox.Font = new System.Drawing.Font("MS PGothic", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.commandsRichTextBox.ForeColor = System.Drawing.SystemColors.Window;
+            this.commandsRichTextBox.Location = new System.Drawing.Point(465, 11);
             this.commandsRichTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.commandsRichTextBox.Name = "commandsRichTextBox";
             this.commandsRichTextBox.ReadOnly = true;
             this.commandsRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.commandsRichTextBox.Size = new System.Drawing.Size(456, 635);
+            this.commandsRichTextBox.Size = new System.Drawing.Size(474, 635);
             this.commandsRichTextBox.TabIndex = 40;
             this.commandsRichTextBox.Text = "";
             // 
             // readFromFileButton
             // 
-            this.readFromFileButton.Location = new System.Drawing.Point(682, 659);
+            this.readFromFileButton.Location = new System.Drawing.Point(705, 658);
             this.readFromFileButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.readFromFileButton.Name = "readFromFileButton";
             this.readFromFileButton.Size = new System.Drawing.Size(234, 38);
@@ -695,10 +697,10 @@
             // 
             // saveToFileButton
             // 
-            this.saveToFileButton.Location = new System.Drawing.Point(460, 658);
+            this.saveToFileButton.Location = new System.Drawing.Point(465, 658);
             this.saveToFileButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.saveToFileButton.Name = "saveToFileButton";
-            this.saveToFileButton.Size = new System.Drawing.Size(216, 38);
+            this.saveToFileButton.Size = new System.Drawing.Size(234, 38);
             this.saveToFileButton.TabIndex = 42;
             this.saveToFileButton.Text = "Zapisz";
             this.saveToFileButton.UseVisualStyleBackColor = true;
@@ -710,9 +712,9 @@
             // 
             // setRegisterValueButton
             // 
-            this.setRegisterValueButton.Location = new System.Drawing.Point(259, 212);
+            this.setRegisterValueButton.Location = new System.Drawing.Point(241, 212);
             this.setRegisterValueButton.Name = "setRegisterValueButton";
-            this.setRegisterValueButton.Size = new System.Drawing.Size(195, 38);
+            this.setRegisterValueButton.Size = new System.Drawing.Size(213, 38);
             this.setRegisterValueButton.TabIndex = 43;
             this.setRegisterValueButton.Text = "Ustaw rejestry";
             this.setRegisterValueButton.UseVisualStyleBackColor = true;

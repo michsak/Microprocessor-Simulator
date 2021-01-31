@@ -13,7 +13,6 @@ using System.Windows.Forms;
 
 
 //TODO
-//start registers value not always zero
 //add to registers as class
 //frontend
 
@@ -32,8 +31,8 @@ namespace MicroprocessorSimulator
         private readonly int maxNumberOfCommands = 30;
 
         //color variables
-        private readonly Color backExecutedCommandsColor = Color.LightSlateGray;
-        private readonly Color backCommandBoxColor = Color.Cornsilk;
+        private readonly Color backExecutedCommandsColor = Color.Gray;
+        private readonly Color backCommandBoxColor = Color.Black;
 
         //registers and whole instruction content holders
         private Int16[] registers = { 0, 0, 0, 0 };
@@ -288,7 +287,7 @@ namespace MicroprocessorSimulator
             else if(currentExecutingCommand < totalCommandsNumber && currentCommandsExecutingType == (int)CommandExecutingType.STEP_BY_STEP)
             {
                 ExecuteCurrentCommand(currentExecutingCommand);
-                ChangeCommandFontColor(currentExecutingCommand-1, Color.Black);     //change color back to black
+                ChangeCommandFontColor(currentExecutingCommand-1, Color.White);     //change color back to black
                 ChangeCommandsBackgroundColor(currentExecutingCommand, backExecutedCommandsColor);
                 currentExecutingCommand++;
 
