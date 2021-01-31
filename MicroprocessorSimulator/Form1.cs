@@ -14,7 +14,6 @@ using System.Windows.Forms;
 
 //TODO
 //start registers value not always zero
-//max number of commands
 //add to registers as class
 //frontend
 
@@ -29,7 +28,8 @@ namespace MicroprocessorSimulator
         private int currentSourceType;
         private int currentCommandsExecutingType;
         private int currentExecutingCommand = 0;
-        private int totalCommendsNumber = 0;
+        private int totalCommandsNumber = 0;
+        private readonly int maxNumberOfCommands = 30;
 
         //color variables
         private readonly Color backExecutedCommandsColor = Color.LightSlateGray;
@@ -38,10 +38,10 @@ namespace MicroprocessorSimulator
         //registers and whole instruction content holders
         private Int16[] registers = { 0, 0, 0, 0 };
         private List<TextBox> textBoxes = new List<TextBox>();
-        private Dictionary<int, string> addresingTypeDic = new Dictionary<int, string>();
-        private Dictionary<int, string> instructionTypeDic = new Dictionary<int, string>();
-        private Dictionary<int, string> sourceTypeDic = new Dictionary<int, string>();
-        private Dictionary<int, string> destinationTypeDic = new Dictionary<int, string>();
+        private AddressingTypeContainer addresses = new AddressingTypeContainer();
+        private InstructionTypeContainer instructions = new InstructionTypeContainer();
+        private SourceTypeContainer sources = new SourceTypeContainer();
+        private DestinationTypeContainer destinations = new DestinationTypeContainer();
         private List<int[]> registersCommands = new List<int[]>();
 
 
@@ -50,13 +50,8 @@ namespace MicroprocessorSimulator
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.FixedSingle; //restrict from resizing
             MaximizeBox = false;  //disable maximize button
-
             InitializeTextBoxList();
             FillRegistersWithZeros();
-            InitializeRegisterTypeDict();
-            InitializeInstructionTypeDict();
-            InitializeSourceDict();
-            InitializeDestinationDict();
         }
 
         private void InitializeTextBoxList()
@@ -69,35 +64,6 @@ namespace MicroprocessorSimulator
             textBoxes.Add(textBox6);
             textBoxes.Add(textBox7);
             textBoxes.Add(textBox8);
-        }
-
-        private void InitializeRegisterTypeDict()
-        {
-            addresingTypeDic.Add(0, Enum.GetName(typeof(AddressingTypes), AddressingTypes.REG));
-            addresingTypeDic.Add(1, Enum.GetName(typeof(AddressingTypes), AddressingTypes.IMM));
-        }
-
-        private void InitializeInstructionTypeDict()
-        {
-            instructionTypeDic.Add(0, Enum.GetName(typeof(InstructionTypes), InstructionTypes.ADD));
-            instructionTypeDic.Add(1, Enum.GetName(typeof(InstructionTypes), InstructionTypes.SUB));
-            instructionTypeDic.Add(2, Enum.GetName(typeof(InstructionTypes), InstructionTypes.MOV));
-        }
-
-        private void InitializeSourceDict()
-        {
-            sourceTypeDic.Add(0, Enum.GetName(typeof(Registers), Registers.AX));
-            sourceTypeDic.Add(1, Enum.GetName(typeof(Registers), Registers.BX));
-            sourceTypeDic.Add(2, Enum.GetName(typeof(Registers), Registers.CX));
-            sourceTypeDic.Add(3, Enum.GetName(typeof(Registers), Registers.DX));
-        }
-
-        private void InitializeDestinationDict()
-        {
-            destinationTypeDic.Add(0, Enum.GetName(typeof(Registers), Registers.AX));
-            destinationTypeDic.Add(1, Enum.GetName(typeof(Registers), Registers.BX));
-            destinationTypeDic.Add(2, Enum.GetName(typeof(Registers), Registers.CX));
-            destinationTypeDic.Add(3, Enum.GetName(typeof(Registers), Registers.DX));
         }
 
         private void CleanRegistersButton_Click(object sender, EventArgs e)
@@ -268,7 +234,7 @@ namespace MicroprocessorSimulator
                     }
 
                     registersCommands.Add(new int[5] { adressingType, instructionType, sourceType, destinationType, value });
-                    totalCommendsNumber++;
+                    totalCommandsNumber++;
                 }
                 catch
                 {
@@ -310,14 +276,14 @@ namespace MicroprocessorSimulator
                 ChangeAllTextBacgroundColor(backCommandBoxColor);
             }
 
-            else if(currentExecutingCommand < totalCommendsNumber && currentCommandsExecutingType == (int)CommandExecutingType.STEP_BY_STEP)
+            else if(currentExecutingCommand < totalCommandsNumber && currentCommandsExecutingType == (int)CommandExecutingType.STEP_BY_STEP)
             {
                 ExecuteCurrentCommand(currentExecutingCommand);
                 ChangeCommandFontColor(currentExecutingCommand-1, Color.Black);     //change color back to black
                 ChangeCommandsBackgroundColor(currentExecutingCommand, backExecutedCommandsColor);
                 currentExecutingCommand++;
 
-                if (currentExecutingCommand >= totalCommendsNumber)
+                if (currentExecutingCommand >= totalCommandsNumber)
                 {
                     currentExecutingCommand = 0;
                     System.Threading.Thread.Sleep(300);     //sleep for 300ms to enable user see performed action
@@ -386,34 +352,37 @@ namespace MicroprocessorSimulator
 
         private void LoadActionsIntoMemory(object sender, EventArgs e)
         {
-            string command = "";
-            int currentSourceType = 0;
-            string sourceTypeInText = "";
-            string destinationTypeInText = "";
-            int value = 0;
-            string valueInText = "0";
-
-            if (currentAddressingType == (int)AddressingTypes.REG)
+            if (totalCommandsNumber <= maxNumberOfCommands)
             {
-                currentSourceType = this.currentSourceType;
-                sourceTypeInText = sourceTypeDic[this.currentSourceType];
-                destinationTypeInText = $" {destinationTypeDic[currentDestinationType]}";
-                valueInText = value.ToString().Replace("0", String.Empty);
-            }
-            else
-            {
-                value = (Int16)numericBox.Value;
-                currentSourceType = currentAddressingType;      //actually null is enough
-                destinationTypeInText = $"{destinationTypeDic[currentDestinationType]}";
-                valueInText = value.ToString();
-            }
+                string command = "";
+                int currentSourceType = 0;
+                string sourceTypeInText = "";
+                string destinationTypeInText = "";
+                int value = 0;
+                string valueInText = "0";
 
-            command = $"{totalCommendsNumber}. {addresingTypeDic[currentAddressingType]} {instructionTypeDic[currentInstructionType]} {sourceTypeInText}" +
-                $"{destinationTypeInText} {valueInText};";
-            WriteCommandIntoTextbox(command, valueInText);
+                if (currentAddressingType == (int)AddressingTypes.REG)
+                {
+                    currentSourceType = this.currentSourceType;
+                    sourceTypeInText = sources.sourcesData[this.currentSourceType];
+                    destinationTypeInText = $" {destinations.destinationData[currentDestinationType]}";
+                    valueInText = value.ToString().Replace("0", String.Empty);
+                }
+                else
+                {
+                    value = (Int16)numericBox.Value;
+                    currentSourceType = currentAddressingType;      //actually null is enough
+                    destinationTypeInText = $"{destinations.destinationData[currentDestinationType]}";
+                    valueInText = value.ToString();
+                }
 
-            registersCommands.Add(new int[5] { currentAddressingType, currentInstructionType, currentSourceType, currentDestinationType, value }); //would better look as class
-            totalCommendsNumber++;
+                command = $"{totalCommandsNumber}. {addresses.addressesData[currentAddressingType]} {instructions.instructionsData[currentInstructionType]} {sourceTypeInText}" +
+                    $"{destinationTypeInText} {valueInText};";
+                WriteCommandIntoTextbox(command, valueInText);
+
+                registersCommands.Add(new int[5] { currentAddressingType, currentInstructionType, currentSourceType, currentDestinationType, value }); //would better look as class
+                totalCommandsNumber++;
+            }
         }
 
         private void WriteCommandIntoTextbox(string command, string valueInText)
@@ -435,7 +404,7 @@ namespace MicroprocessorSimulator
         private void ClearTextBoxResetCommandNumberAndDisableButton()
         {
             commandsRichTextBox.Clear();
-            totalCommendsNumber = 0;
+            totalCommandsNumber = 0;
             registersCommands.Clear();
             currentExecutingCommand = 0;
             this.loadButton.Enabled = true;
