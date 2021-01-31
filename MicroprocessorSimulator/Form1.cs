@@ -38,6 +38,7 @@ namespace MicroprocessorSimulator
         //registers and whole instruction content holders
         private Int16[] registers = { 0, 0, 0, 0 };
         private List<TextBox> textBoxes = new List<TextBox>();
+        private List<NumericUpDown> numericBoxes = new List<NumericUpDown>();
         private AddressingTypeContainer addresses = new AddressingTypeContainer();
         private InstructionTypeContainer instructions = new InstructionTypeContainer();
         private SourceTypeContainer sources = new SourceTypeContainer();
@@ -52,8 +53,16 @@ namespace MicroprocessorSimulator
             MaximizeBox = false;  //disable maximize button
             InitializeTextBoxList();
             FillRegistersWithZeros();
+            InitializeNumericBoxList();
         }
 
+        private void InitializeNumericBoxList()
+        {
+            numericBoxes.Add(numericUpDown1);
+            numericBoxes.Add(numericUpDown2);
+            numericBoxes.Add(numericUpDown3);
+            numericBoxes.Add(numericUpDown4);
+        }
         private void InitializeTextBoxList()
         {
             textBoxes.Add(textBox1);
@@ -327,6 +336,10 @@ namespace MicroprocessorSimulator
 
             string stringBytes = ConvertToBites(registers[registersCommands[i][3]]);
             DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registersCommands[i][3]], textBoxes[2 * registersCommands[i][3] + 1]);
+            for(int j = 0; j < numericBoxes.Count; j++)
+            {
+                numericBoxes[j].Value = registers[j];
+            }
         }
 
         private void ChangeCommandsBackgroundColor(int i, Color color)
@@ -408,6 +421,17 @@ namespace MicroprocessorSimulator
             registersCommands.Clear();
             currentExecutingCommand = 0;
             this.loadButton.Enabled = true;
+        }
+
+        private void setRegisterValueButton_Click(object sender, EventArgs e)
+        {
+            for(int i = 0; i < numericBoxes.Count; i++)
+            {
+                registers[i] = (Int16)numericBoxes[i].Value;
+                string stringBytes = ConvertToBites(registers[i]);
+                DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * i], textBoxes[2 * i + 1]);
+            }
+            
         }
     }
 }
