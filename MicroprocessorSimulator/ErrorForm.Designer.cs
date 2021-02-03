@@ -46,7 +46,7 @@
             this.ClientSize = new System.Drawing.Size(241, 65);
             this.Controls.Add(this.errorLabel);
             this.Name = "ErrorForm";
-            this.Text = "ErrorForm";
+            this.Text = "Error";
             this.ResumeLayout(false);
 
         }

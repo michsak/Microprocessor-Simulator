@@ -1,20 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
-//TODO
-//add to registers as class
-//frontend
 
 namespace MicroprocessorSimulator
 {
@@ -28,9 +18,10 @@ namespace MicroprocessorSimulator
         private int currentCommandsExecutingType;
         private int currentExecutingCommand = 0;
         private int totalCommandsNumber = 0;
-        private readonly int maxNumberOfCommands = 30;
+        private readonly int maxNumberOfCommands = 50;
 
         //color variables
+        private readonly Color fontColor = Color.White;
         private readonly Color backExecutedCommandsColor = Color.Gray;
         private readonly Color backCommandBoxColor = Color.Black;
 
@@ -42,7 +33,7 @@ namespace MicroprocessorSimulator
         private InstructionTypeContainer instructions = new InstructionTypeContainer();
         private SourceTypeContainer sources = new SourceTypeContainer();
         private DestinationTypeContainer destinations = new DestinationTypeContainer();
-        private List<int[]> registersCommands = new List<int[]>();
+        private List<RegistersAdder> registryCommander = new List<RegistersAdder>();
 
 
         public Form1()
@@ -174,6 +165,14 @@ namespace MicroprocessorSimulator
         {
             RadioButton radioButton = (RadioButton)sender;
             currentCommandsExecutingType = int.Parse(radioButton.Tag.ToString());
+            if (currentCommandsExecutingType == (int)CommandExecutingType.TOTAL)
+            {
+                for (int i = 0; i < registryCommander.Count; i++)
+                {
+                    ChangeCommandFontColor(i, fontColor);
+                    ChangeCommandsBackgroundColor(i, backCommandBoxColor);
+                }
+            }
         }
 
         private void SaveToFile(object sender, EventArgs e)
@@ -198,14 +197,14 @@ namespace MicroprocessorSimulator
             FileReader fileReader = new FileReader(openFileDialog1.FileName);
             commandsRichTextBox.Text = fileReader.ReturnText();
 
-            string regexPattern = @"\d+.\s\b(IMM|REG)\b\s\b(ADD|SUB|MOV)\b\s\b(AX|BX|CX|DX)\b\s";   //to be improved
+            string regexPattern = @"\d+.\s\b(IMM|REG)\b\s\b(ADD|SUB|MOV)\b\s\b(AX|BX|CX|DX)\b\s";
             Regex regex = new Regex(regexPattern);
-            bool firstLineIsValid = regex.IsMatch(commandsRichTextBox.Lines[0]);
+            int secondToLast = commandsRichTextBox.Lines.Count() - 2;
+            bool firstLineIsValid = regex.IsMatch(commandsRichTextBox.Lines[0]) && regex.IsMatch(commandsRichTextBox.Lines[secondToLast]);
 
             if (firstLineIsValid)
             {
                 IterateThroughAllLines(regex);
-                this.loadButton.Enabled = false;
             }
             else
             {
@@ -216,7 +215,8 @@ namespace MicroprocessorSimulator
 
         private void IterateThroughAllLines(Regex regex)
         {
-            for (int i = 0; i < commandsRichTextBox.Lines.Count() - 1; i++)   //-1 cause last line in this formatting method always empty
+            int lastLine = commandsRichTextBox.Lines.Count() - 1;   //-1 cause last line in this formatting method always empty
+            for (int i = 0; i < lastLine; i++)
             {
                 string currentCommand = commandsRichTextBox.Lines[i];
                 string[] seperateCommandComponents = currentCommand.Split(' ');
@@ -225,23 +225,23 @@ namespace MicroprocessorSimulator
                 {
                     bool isAnyLineBad = !regex.IsMatch(commandsRichTextBox.Lines[i]);
                     if (isAnyLineBad) { break; }
-                    int adressingType = changeTypesToInt(seperateCommandComponents[1]);
-                    int instructionType = changeTypesToInt(seperateCommandComponents[2]);
-                    int sourceType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
+                    int addressingType = ChangeTypesToInt(seperateCommandComponents[1]);
+                    int instructionType = ChangeTypesToInt(seperateCommandComponents[2]);
+                    int sourceType = ChangeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
                     int destinationType = 0;
                     int value = 0;
 
-                    if (adressingType == (int)AddressingTypes.REG)
+                    if (addressingType == (int)AddressingTypes.REG)
                     {
-                        destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
+                        destinationType = ChangeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
                     }
                     else
                     {
-                        destinationType = changeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
+                        destinationType = ChangeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
                         value = int.Parse(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
                     }
 
-                    registersCommands.Add(new int[5] { adressingType, instructionType, sourceType, destinationType, value });
+                    registryCommander.Add(new RegistersAdder(addressingType, destinationType, sourceType, destinationType, value));
                     totalCommandsNumber++;
                 }
                 catch
@@ -252,7 +252,7 @@ namespace MicroprocessorSimulator
             }
         }
 
-        private int changeTypesToInt(string type)
+        private int ChangeTypesToInt(string type)
         {
             var changeDict = new Dictionary<string, int>()
             {
@@ -274,7 +274,7 @@ namespace MicroprocessorSimulator
         {
             if (currentCommandsExecutingType == (int)CommandExecutingType.TOTAL)
             {
-                for (int i = 0; i < registersCommands.Count; i++)
+                for (int i = 0; i < registryCommander.Count; i++)
                 {
                     ExecuteCurrentCommand(i);
                 }
@@ -287,7 +287,7 @@ namespace MicroprocessorSimulator
             else if(currentExecutingCommand < totalCommandsNumber && currentCommandsExecutingType == (int)CommandExecutingType.STEP_BY_STEP)
             {
                 ExecuteCurrentCommand(currentExecutingCommand);
-                ChangeCommandFontColor(currentExecutingCommand-1, Color.White);     //change color back to black
+                ChangeCommandFontColor(currentExecutingCommand-1, Color.White);
                 ChangeCommandsBackgroundColor(currentExecutingCommand, backExecutedCommandsColor);
                 currentExecutingCommand++;
 
@@ -306,7 +306,7 @@ namespace MicroprocessorSimulator
 
         private void ChangeRichTextBoxBackColor()
         {
-            for (int i = 0; i < registersCommands.Count; i++)
+            for (int i = 0; i < registryCommander.Count; i++)
             {
                 ChangeCommandsBackgroundColor(i, backCommandBoxColor);
             }
@@ -314,28 +314,31 @@ namespace MicroprocessorSimulator
 
         private void ExecuteCurrentCommand(int i)
         {
-            Int16 registerValue = (Int16)registersCommands[i][4];
-            if (registersCommands[i][0] == (int)AddressingTypes.REG)
+            Int16 registerValue = (Int16)registryCommander[i].GetValue();
+
+            if (registryCommander[i].GetAddressingType() == (int)AddressingTypes.REG)
             {
-                registerValue = registers[registersCommands[i][2]];
+                registerValue = registers[registryCommander[i].GetSourceType()];
             }
 
-            switch (registersCommands[i][1])
+            switch (registryCommander[i].GetInstructionType())
             {
                 case 0:
-                    registers[registersCommands[i][3]] += registerValue;
+                    registers[registryCommander[i].GetDestinationType()] += registerValue;
                     break;
                 case 1:
-                    registers[registersCommands[i][3]] -= registerValue;
+                    registers[registryCommander[i].GetDestinationType()] -= registerValue;
                     break;
                 case 2:
-                    registers[registersCommands[i][3]] = registerValue;
+                    registers[registryCommander[i].GetDestinationType()] = registerValue;
                     break;
             }
 
-            string stringBytes = ConvertToBites(registers[registersCommands[i][3]]);
-            DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registersCommands[i][3]], textBoxes[2 * registersCommands[i][3] + 1]);
-            for(int j = 0; j < numericBoxes.Count; j++)
+            string stringBytes = ConvertToBites(registers[registryCommander[i].GetDestinationType()]);
+            DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registryCommander[i].GetDestinationType()], 
+                textBoxes[2 * registryCommander[i].GetDestinationType() + 1]);
+
+            for (int j = 0; j < numericBoxes.Count; j++)
             {
                 numericBoxes[j].Value = registers[j];
             }
@@ -377,7 +380,7 @@ namespace MicroprocessorSimulator
                 {
                     currentSourceType = this.currentSourceType;
                     sourceTypeInText = sources.sourcesData[this.currentSourceType];
-                    destinationTypeInText = $" {destinations.destinationData[currentDestinationType]}";
+                    destinationTypeInText = $"{destinations.destinationData[currentDestinationType]} ";
                     valueInText = value.ToString().Replace("0", String.Empty);
                 }
                 else
@@ -388,11 +391,11 @@ namespace MicroprocessorSimulator
                     valueInText = value.ToString();
                 }
 
-                command = $"{totalCommandsNumber}. {addresses.addressesData[currentAddressingType]} {instructions.instructionsData[currentInstructionType]} {sourceTypeInText}" +
-                    $"{destinationTypeInText} {valueInText};";
+                command = $"{totalCommandsNumber}. {addresses.addressesData[currentAddressingType]} {instructions.instructionsData[currentInstructionType]} {destinationTypeInText}" +
+                    $"{sourceTypeInText} {valueInText};";
                 WriteCommandIntoTextbox(command, valueInText);
 
-                registersCommands.Add(new int[5] { currentAddressingType, currentInstructionType, currentSourceType, currentDestinationType, value }); //would better look as class
+                registryCommander.Add(new RegistersAdder(currentAddressingType, currentInstructionType, currentSourceType, currentDestinationType, value));
                 totalCommandsNumber++;
             }
         }
@@ -417,9 +420,8 @@ namespace MicroprocessorSimulator
         {
             commandsRichTextBox.Clear();
             totalCommandsNumber = 0;
-            registersCommands.Clear();
+            registryCommander.Clear();
             currentExecutingCommand = 0;
-            this.loadButton.Enabled = true;
         }
 
         private void setRegisterValueButton_Click(object sender, EventArgs e)
@@ -430,7 +432,6 @@ namespace MicroprocessorSimulator
                 string stringBytes = ConvertToBites(registers[i]);
                 DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * i], textBoxes[2 * i + 1]);
             }
-            
         }
     }
 }
