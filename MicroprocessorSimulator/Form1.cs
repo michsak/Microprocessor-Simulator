@@ -6,6 +6,31 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 
+//TODO
+//external interrupts
+//link http://www.ablmcc.edu.hk/~scy/CIT/8086_bios_and_dos_interrupts.htm
+//link https://en.wikipedia.org/wiki/BIOS_interrupt_call
+//link https://en.wikipedia.org/wiki/DOS_API
+//link http://spike.scu.edu.au/~barry/interrupts.html
+// sygnal powoduje zmiane przeplywu sterowania niezaleznie od wykonywanego dzialania --> wstrzymanie, wykonanie przerwania
+// rejestry AH,AL;BH,BL...
+//np odczytanie bufora z klawiatury --> Push AX (stos zapamietuje AX) --> MOV AH, 10H 
+
+//BIOS
+//12h - odczyt rozmiaru zainstalowanej pamięci
+//70h - IRQ8 - zegar czasu rzeczywistego
+//10h - funkcja 02h - ustaw pozycje kursora
+//10h - funkcja 03h - odczytaj poz. kursora
+//15h funkcja C0H - informacje o srodowisku pracy
+//1Ah funkcja 04h - data RC
+//1Ah funkcja 02h - stan zegara RTC
+//DOS
+//AH 3C - stworz plik
+//AH 2A - pobierz date systemowa
+//AH 2C - pobierz czas systemowy
+//AH 0D - zamknij wszystkie pliki dysku (reset disk) --> FileSystem.Reset w c#
+//AH 0Fh - otworz plik
+
 namespace MicroprocessorSimulator
 {
     public partial class Form1 : Form
