@@ -8,11 +8,16 @@ namespace MicroprocessorSimulator
 {
     public class RegistersAdder
     {
-        private int addressingType;
-        private int instructionType;
-        private int sourceType;
-        private int destinationType;
+        private int addressingType=-1;
+        private int instructionType=-1;
+        private int sourceType=-1;
+        private int destinationType=-1;
         private int value;
+        private int pushOrPopType=2;
+        private int registerType;
+        private int interruptIndex;
+        private string ahValue="NONE";
+        private bool isInterrupt = false;
 
         public RegistersAdder(int addressingType, int instructionType, int sourceType, int destinationType, int value)
         {
@@ -21,6 +26,24 @@ namespace MicroprocessorSimulator
             this.sourceType = sourceType;
             this.destinationType = destinationType;
             this.value = value;
+        }
+
+        public RegistersAdder(int pushOrPopType, int registerType)
+        {
+            this.pushOrPopType = pushOrPopType;
+            this.registerType = registerType;
+        }
+
+        public RegistersAdder(bool isInterrupt, int interrupt)
+        {
+            this.interruptIndex = interrupt;
+            this.isInterrupt = isInterrupt;
+        }
+
+        public RegistersAdder(int destinationType, string ahValue)
+        {
+            this.destinationType = destinationType;
+            this.ahValue = ahValue;
         }
 
         public int GetAddressingType()
@@ -46,6 +69,31 @@ namespace MicroprocessorSimulator
         public int GetValue()
         {
             return value;
+        }
+
+        public int GetPushOrPopType()
+        {
+            return pushOrPopType;
+        }
+
+        public int GetRegisterType()
+        {
+            return registerType;
+        }
+
+        public string GetAHValue()
+        {
+            return ahValue;
+        }
+
+        public bool GetIsInterrupt()
+        {
+            return isInterrupt;
+        }
+
+        public int GetInterruptIndex()
+        {
+            return interruptIndex;
         }
     }
 }

@@ -59,6 +59,8 @@ namespace MicroprocessorSimulator
         private SourceTypeContainer sources = new SourceTypeContainer();
         private DestinationTypeContainer destinations = new DestinationTypeContainer();
         private List<RegistersAdder> registryCommander = new List<RegistersAdder>();
+        private Stack<int> interruptsStack = new Stack<int>();
+        private Dictionary<String, Int16> aHToBinary = new Dictionary<String, Int16>();
 
 
         public Form1()
@@ -69,6 +71,9 @@ namespace MicroprocessorSimulator
             InitializeTextBoxList();
             FillRegistersWithZeros();
             InitializeNumericBoxList();
+            InitializeAHDict();
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
         }
 
         private void InitializeNumericBoxList()
@@ -88,6 +93,21 @@ namespace MicroprocessorSimulator
             textBoxes.Add(textBox6);
             textBoxes.Add(textBox7);
             textBoxes.Add(textBox8);
+        }
+
+        private void InitializeAHDict()
+        {
+            aHToBinary.Add("00h", 0);
+            aHToBinary.Add("01h", 256);
+            aHToBinary.Add("02h", 512);
+            aHToBinary.Add("03h", 768);
+            aHToBinary.Add("04h", 1024);
+            aHToBinary.Add("05h", 1280);
+            aHToBinary.Add("06h", 1536);
+            aHToBinary.Add("07h", 1792);
+            aHToBinary.Add("08h", 2048);
+            aHToBinary.Add("09h", 2304);
+            aHToBinary.Add("10h", 2560);
         }
 
         private void CleanRegistersButton_Click(object sender, EventArgs e)
@@ -339,33 +359,74 @@ namespace MicroprocessorSimulator
 
         private void ExecuteCurrentCommand(int i)
         {
-            Int16 registerValue = (Int16)registryCommander[i].GetValue();
-
-            if (registryCommander[i].GetAddressingType() == (int)AddressingTypes.REG)
+            if (registryCommander[i].GetPushOrPopType() == 0)
             {
-                registerValue = registers[registryCommander[i].GetSourceType()];
+                interruptsStack.Push(registers[registryCommander[i].GetRegisterType()]);
             }
-
-            switch (registryCommander[i].GetInstructionType())
+            else if(registryCommander[i].GetPushOrPopType() == 1)
             {
-                case 0:
-                    registers[registryCommander[i].GetDestinationType()] += registerValue;
-                    break;
-                case 1:
-                    registers[registryCommander[i].GetDestinationType()] -= registerValue;
-                    break;
-                case 2:
-                    registers[registryCommander[i].GetDestinationType()] = registerValue;
-                    break;
+                registers[registryCommander[i].GetRegisterType()]=(short)interruptsStack.Pop();
+
+                string stringBytes = ConvertToBites(registers[registryCommander[i].GetRegisterType()]);
+                DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registryCommander[i].GetRegisterType()],
+                    textBoxes[2 * registryCommander[i].GetRegisterType() + 1]);
+                for (int j = 0; j < numericBoxes.Count; j++)
+                {
+                    numericBoxes[j].Value = registers[j];
+                }
             }
-
-            string stringBytes = ConvertToBites(registers[registryCommander[i].GetDestinationType()]);
-            DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registryCommander[i].GetDestinationType()], 
-                textBoxes[2 * registryCommander[i].GetDestinationType() + 1]);
-
-            for (int j = 0; j < numericBoxes.Count; j++)
+            else if (registryCommander[i].GetAHValue() != "NONE")
             {
-                numericBoxes[j].Value = registers[j];
+                registers[registryCommander[i].GetDestinationType()] = aHToBinary[registryCommander[i].GetAHValue()];
+                string stringBytes = ConvertToBites(registers[registryCommander[i].GetDestinationType()]);
+                DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registryCommander[i].GetDestinationType()],
+                    textBoxes[2 * registryCommander[i].GetDestinationType() + 1]);
+
+                for (int j = 0; j < numericBoxes.Count; j++)
+                {
+                    numericBoxes[j].Value = registers[j];
+                }
+            }
+            else if (registryCommander[i].GetIsInterrupt())
+            {
+                switch (registryCommander[i].GetInterruptIndex())
+                {
+                    case 3:
+                        TimeReader timeReader = new TimeReader(registers[0]);
+                        break;
+                }
+
+            }
+            else if (registryCommander[i].GetAddressingType() != -1)
+            {
+                Int16 registerValue = (Int16)registryCommander[i].GetValue();
+
+                if (registryCommander[i].GetAddressingType() == (int)AddressingTypes.REG)
+                {
+                    registerValue = registers[registryCommander[i].GetSourceType()];
+                }
+
+                switch (registryCommander[i].GetInstructionType())
+                {
+                    case 0:
+                        registers[registryCommander[i].GetDestinationType()] += registerValue;
+                        break;
+                    case 1:
+                        registers[registryCommander[i].GetDestinationType()] -= registerValue;
+                        break;
+                    case 2:
+                        registers[registryCommander[i].GetDestinationType()] = registerValue;
+                        break;
+                }
+
+                string stringBytes = ConvertToBites(registers[registryCommander[i].GetDestinationType()]);
+                DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registryCommander[i].GetDestinationType()], 
+                    textBoxes[2 * registryCommander[i].GetDestinationType() + 1]);
+
+                for (int j = 0; j < numericBoxes.Count; j++)
+                {
+                    numericBoxes[j].Value = registers[j];
+                }
             }
         }
 
@@ -392,36 +453,56 @@ namespace MicroprocessorSimulator
 
         private void LoadActionsIntoMemory(object sender, EventArgs e)
         {
-            if (totalCommandsNumber <= maxNumberOfCommands)
+            if(comboBox1.SelectedIndex != 0)
             {
-                string command = "";
-                int currentSourceType = 0;
-                string sourceTypeInText = "";
-                string destinationTypeInText = "";
-                int value = 0;
-                string valueInText = "0";
-
-                if (currentAddressingType == (int)AddressingTypes.REG)
-                {
-                    currentSourceType = this.currentSourceType;
-                    sourceTypeInText = sources.sourcesData[this.currentSourceType];
-                    destinationTypeInText = $"{destinations.destinationData[currentDestinationType]} ";
-                    valueInText = value.ToString().Replace("0", String.Empty);
-                }
-                else
-                {
-                    value = (Int16)numericBox.Value;
-                    currentSourceType = currentAddressingType;      //actually null is enough
-                    destinationTypeInText = $"{destinations.destinationData[currentDestinationType]}";
-                    valueInText = value.ToString();
-                }
-
-                command = $"{totalCommandsNumber}. {addresses.addressesData[currentAddressingType]} {instructions.instructionsData[currentInstructionType]} {destinationTypeInText}" +
-                    $"{sourceTypeInText} {valueInText};";
-                WriteCommandIntoTextbox(command, valueInText);
-
-                registryCommander.Add(new RegistersAdder(currentAddressingType, currentInstructionType, currentSourceType, currentDestinationType, value));
+                string command = $"{totalCommandsNumber}. {comboBox1.Text};";
+                registryCommander.Add(new RegistersAdder(true, comboBox1.SelectedIndex));
+                commandsRichTextBox.AppendText(command);
+                commandsRichTextBox.AppendText(Environment.NewLine);
                 totalCommandsNumber++;
+            }
+            else if(comboBox2.SelectedIndex !=0)
+            {
+                string command = $"{totalCommandsNumber}. MOV AH {comboBox2.Text};";
+                registryCommander.Add(new RegistersAdder(0, comboBox2.Text));
+                commandsRichTextBox.AppendText(command);
+                commandsRichTextBox.AppendText(Environment.NewLine);
+                totalCommandsNumber++;
+            }
+            else
+            {
+                if (totalCommandsNumber <= maxNumberOfCommands)
+                {
+                    string command = "";
+                    int currentSourceType = 0;
+                    string sourceTypeInText = "";
+                    string destinationTypeInText = "";
+                    int value = 0;
+                    string valueInText = "0";
+
+                    if (currentAddressingType == (int)AddressingTypes.REG)
+                    {
+                        currentSourceType = this.currentSourceType;
+                        sourceTypeInText = sources.sourcesData[this.currentSourceType];
+                        destinationTypeInText = $"{destinations.destinationData[currentDestinationType]} ";
+                        valueInText = value.ToString().Replace("0", String.Empty);
+                    }
+                    else
+                    {
+                        value = (Int16)numericBox.Value;
+                        currentSourceType = currentAddressingType;      //actually null is enough
+                        destinationTypeInText = $"{destinations.destinationData[currentDestinationType]}";
+                        valueInText = value.ToString();
+                    }
+
+                    command = $"{totalCommandsNumber}. {addresses.addressesData[currentAddressingType]} {instructions.instructionsData[currentInstructionType]} {destinationTypeInText}" +
+                        $"{sourceTypeInText} {valueInText};";
+                    WriteCommandIntoTextbox(command, valueInText);
+
+                    registryCommander.Add(new RegistersAdder(currentAddressingType, currentInstructionType, currentSourceType, currentDestinationType, value));
+                    totalCommandsNumber++;
+                }
+
             }
         }
 
@@ -457,6 +538,43 @@ namespace MicroprocessorSimulator
                 string stringBytes = ConvertToBites(registers[i]);
                 DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * i], textBoxes[2 * i + 1]);
             }
+        }
+
+        private void PushButton_Click(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            int currentPushOrPullType = int.Parse(button.Tag.ToString());
+            string sourceTypeInText = sources.sourcesData[this.currentSourceType];
+
+            string command = $"{totalCommandsNumber}. {button.Text} {sourceTypeInText};";
+
+            commandsRichTextBox.AppendText(command);
+            commandsRichTextBox.AppendText(Environment.NewLine);
+            registryCommander.Add(new RegistersAdder(currentPushOrPullType, currentSourceType));
+            totalCommandsNumber++;
+        }
+
+        private void PopButton_Click(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            int currentPushOrPullType = int.Parse(button.Tag.ToString());
+            string destinationTypeInText = destinations.destinationData[this.currentDestinationType];
+
+            string command = $"{totalCommandsNumber}. {button.Text} {destinationTypeInText};";
+
+            commandsRichTextBox.AppendText(command);
+            commandsRichTextBox.AppendText(Environment.NewLine);
+            registryCommander.Add(new RegistersAdder(currentPushOrPullType, currentDestinationType));
+            totalCommandsNumber++;
+        }
+
+        private void numericBox_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ExecuteInterrupt()
+        {
         }
     }
 }

@@ -88,6 +88,13 @@
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.pushButton = new System.Windows.Forms.Button();
+            this.popButton = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.AdressingTypeGroup.SuspendLayout();
             this.IntructionGroupBox.SuspendLayout();
             this.DGroupBox.SuspendLayout();
@@ -103,189 +110,198 @@
             // RegisterLabel
             // 
             this.RegisterLabel.AutoSize = true;
-            this.RegisterLabel.Location = new System.Drawing.Point(135, 9);
+            this.RegisterLabel.Location = new System.Drawing.Point(152, 11);
             this.RegisterLabel.Name = "RegisterLabel";
-            this.RegisterLabel.Size = new System.Drawing.Size(124, 17);
+            this.RegisterLabel.Size = new System.Drawing.Size(139, 20);
             this.RegisterLabel.TabIndex = 0;
             this.RegisterLabel.Text = "Wartosci rejestrow";
             // 
             // AXLabel
             // 
             this.AXLabel.AutoSize = true;
-            this.AXLabel.Location = new System.Drawing.Point(7, 42);
+            this.AXLabel.Location = new System.Drawing.Point(8, 52);
             this.AXLabel.Name = "AXLabel";
-            this.AXLabel.Size = new System.Drawing.Size(26, 17);
+            this.AXLabel.Size = new System.Drawing.Size(31, 20);
             this.AXLabel.TabIndex = 1;
             this.AXLabel.Text = "AX";
             // 
             // BXLabel
             // 
             this.BXLabel.AutoSize = true;
-            this.BXLabel.Location = new System.Drawing.Point(7, 70);
+            this.BXLabel.Location = new System.Drawing.Point(8, 88);
             this.BXLabel.Name = "BXLabel";
-            this.BXLabel.Size = new System.Drawing.Size(26, 17);
+            this.BXLabel.Size = new System.Drawing.Size(31, 20);
             this.BXLabel.TabIndex = 2;
             this.BXLabel.Text = "BX";
             // 
             // CXLabel
             // 
             this.CXLabel.AutoSize = true;
-            this.CXLabel.Location = new System.Drawing.Point(7, 100);
+            this.CXLabel.Location = new System.Drawing.Point(8, 125);
             this.CXLabel.Name = "CXLabel";
-            this.CXLabel.Size = new System.Drawing.Size(26, 17);
+            this.CXLabel.Size = new System.Drawing.Size(31, 20);
             this.CXLabel.TabIndex = 3;
             this.CXLabel.Text = "CX";
             // 
             // DXLabel
             // 
             this.DXLabel.AutoSize = true;
-            this.DXLabel.Location = new System.Drawing.Point(7, 127);
+            this.DXLabel.Location = new System.Drawing.Point(8, 159);
             this.DXLabel.Name = "DXLabel";
-            this.DXLabel.Size = new System.Drawing.Size(27, 17);
+            this.DXLabel.Size = new System.Drawing.Size(32, 20);
             this.DXLabel.TabIndex = 4;
             this.DXLabel.Text = "DX";
             // 
             // AHLabel
             // 
             this.AHLabel.AutoSize = true;
-            this.AHLabel.Location = new System.Drawing.Point(42, 42);
+            this.AHLabel.Location = new System.Drawing.Point(47, 52);
             this.AHLabel.Name = "AHLabel";
-            this.AHLabel.Size = new System.Drawing.Size(27, 17);
+            this.AHLabel.Size = new System.Drawing.Size(32, 20);
             this.AHLabel.TabIndex = 5;
             this.AHLabel.Text = "AH";
             // 
             // BHLabel
             // 
             this.BHLabel.AutoSize = true;
-            this.BHLabel.Location = new System.Drawing.Point(42, 70);
+            this.BHLabel.Location = new System.Drawing.Point(47, 88);
             this.BHLabel.Name = "BHLabel";
-            this.BHLabel.Size = new System.Drawing.Size(27, 17);
+            this.BHLabel.Size = new System.Drawing.Size(32, 20);
             this.BHLabel.TabIndex = 6;
             this.BHLabel.Text = "BH";
             // 
             // CHLabel
             // 
             this.CHLabel.AutoSize = true;
-            this.CHLabel.Location = new System.Drawing.Point(42, 100);
+            this.CHLabel.Location = new System.Drawing.Point(47, 125);
             this.CHLabel.Name = "CHLabel";
-            this.CHLabel.Size = new System.Drawing.Size(27, 17);
+            this.CHLabel.Size = new System.Drawing.Size(32, 20);
             this.CHLabel.TabIndex = 7;
             this.CHLabel.Text = "CH";
             // 
             // DHLabel
             // 
             this.DHLabel.AutoSize = true;
-            this.DHLabel.Location = new System.Drawing.Point(42, 127);
+            this.DHLabel.Location = new System.Drawing.Point(47, 159);
             this.DHLabel.Name = "DHLabel";
-            this.DHLabel.Size = new System.Drawing.Size(28, 17);
+            this.DHLabel.Size = new System.Drawing.Size(33, 20);
             this.DHLabel.TabIndex = 8;
             this.DHLabel.Text = "DH";
             // 
             // ALLabel
             // 
             this.ALLabel.AutoSize = true;
-            this.ALLabel.Location = new System.Drawing.Point(179, 42);
+            this.ALLabel.Location = new System.Drawing.Point(201, 52);
             this.ALLabel.Name = "ALLabel";
-            this.ALLabel.Size = new System.Drawing.Size(25, 17);
+            this.ALLabel.Size = new System.Drawing.Size(29, 20);
             this.ALLabel.TabIndex = 9;
             this.ALLabel.Text = "AL";
             // 
             // BLLabel
             // 
             this.BLLabel.AutoSize = true;
-            this.BLLabel.Location = new System.Drawing.Point(179, 70);
+            this.BLLabel.Location = new System.Drawing.Point(201, 88);
             this.BLLabel.Name = "BLLabel";
-            this.BLLabel.Size = new System.Drawing.Size(25, 17);
+            this.BLLabel.Size = new System.Drawing.Size(29, 20);
             this.BLLabel.TabIndex = 10;
             this.BLLabel.Text = "BL";
             // 
             // CLLabel
             // 
             this.CLLabel.AutoSize = true;
-            this.CLLabel.Location = new System.Drawing.Point(179, 100);
+            this.CLLabel.Location = new System.Drawing.Point(201, 125);
             this.CLLabel.Name = "CLLabel";
-            this.CLLabel.Size = new System.Drawing.Size(25, 17);
+            this.CLLabel.Size = new System.Drawing.Size(29, 20);
             this.CLLabel.TabIndex = 11;
             this.CLLabel.Text = "CL";
             // 
             // DLLabel
             // 
             this.DLLabel.AutoSize = true;
-            this.DLLabel.Location = new System.Drawing.Point(179, 127);
+            this.DLLabel.Location = new System.Drawing.Point(201, 159);
             this.DLLabel.Name = "DLLabel";
-            this.DLLabel.Size = new System.Drawing.Size(26, 17);
+            this.DLLabel.Size = new System.Drawing.Size(30, 20);
             this.DLLabel.TabIndex = 12;
             this.DLLabel.Text = "DL";
             // 
             // textBox1
             // 
             this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(73, 42);
+            this.textBox1.Location = new System.Drawing.Point(82, 52);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 22);
+            this.textBox1.Size = new System.Drawing.Size(112, 26);
             this.textBox1.TabIndex = 13;
             // 
             // textBox3
             // 
             this.textBox3.Enabled = false;
-            this.textBox3.Location = new System.Drawing.Point(73, 70);
+            this.textBox3.Location = new System.Drawing.Point(82, 88);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 22);
+            this.textBox3.Size = new System.Drawing.Size(112, 26);
             this.textBox3.TabIndex = 14;
             // 
             // textBox5
             // 
             this.textBox5.Enabled = false;
-            this.textBox5.Location = new System.Drawing.Point(73, 100);
+            this.textBox5.Location = new System.Drawing.Point(82, 125);
+            this.textBox5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 22);
+            this.textBox5.Size = new System.Drawing.Size(112, 26);
             this.textBox5.TabIndex = 15;
             // 
             // textBox7
             // 
             this.textBox7.Enabled = false;
-            this.textBox7.Location = new System.Drawing.Point(73, 128);
+            this.textBox7.Location = new System.Drawing.Point(82, 160);
+            this.textBox7.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(100, 22);
+            this.textBox7.Size = new System.Drawing.Size(112, 26);
             this.textBox7.TabIndex = 16;
             // 
             // textBox8
             // 
             this.textBox8.Enabled = false;
-            this.textBox8.Location = new System.Drawing.Point(208, 128);
+            this.textBox8.Location = new System.Drawing.Point(234, 160);
+            this.textBox8.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(100, 22);
+            this.textBox8.Size = new System.Drawing.Size(112, 26);
             this.textBox8.TabIndex = 20;
             // 
             // textBox6
             // 
             this.textBox6.Enabled = false;
-            this.textBox6.Location = new System.Drawing.Point(208, 100);
+            this.textBox6.Location = new System.Drawing.Point(234, 125);
+            this.textBox6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 22);
+            this.textBox6.Size = new System.Drawing.Size(112, 26);
             this.textBox6.TabIndex = 19;
             // 
             // textBox4
             // 
             this.textBox4.Enabled = false;
-            this.textBox4.Location = new System.Drawing.Point(209, 70);
+            this.textBox4.Location = new System.Drawing.Point(235, 88);
+            this.textBox4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 22);
+            this.textBox4.Size = new System.Drawing.Size(112, 26);
             this.textBox4.TabIndex = 18;
             // 
             // textBox2
             // 
             this.textBox2.Enabled = false;
-            this.textBox2.Location = new System.Drawing.Point(209, 42);
+            this.textBox2.Location = new System.Drawing.Point(235, 52);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 22);
+            this.textBox2.Size = new System.Drawing.Size(112, 26);
             this.textBox2.TabIndex = 17;
             // 
             // CleanRegistersButton
             // 
-            this.CleanRegistersButton.Location = new System.Drawing.Point(11, 170);
+            this.CleanRegistersButton.Location = new System.Drawing.Point(12, 212);
+            this.CleanRegistersButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.CleanRegistersButton.Name = "CleanRegistersButton";
-            this.CleanRegistersButton.Size = new System.Drawing.Size(189, 30);
+            this.CleanRegistersButton.Size = new System.Drawing.Size(213, 38);
             this.CleanRegistersButton.TabIndex = 21;
             this.CleanRegistersButton.Text = "Wyczysc rejestry";
             this.CleanRegistersButton.UseVisualStyleBackColor = true;
@@ -295,9 +311,10 @@
             // 
             this.ADDRadioButton.AutoSize = true;
             this.ADDRadioButton.Checked = true;
-            this.ADDRadioButton.Location = new System.Drawing.Point(10, 42);
+            this.ADDRadioButton.Location = new System.Drawing.Point(11, 52);
+            this.ADDRadioButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ADDRadioButton.Name = "ADDRadioButton";
-            this.ADDRadioButton.Size = new System.Drawing.Size(58, 21);
+            this.ADDRadioButton.Size = new System.Drawing.Size(69, 24);
             this.ADDRadioButton.TabIndex = 26;
             this.ADDRadioButton.TabStop = true;
             this.ADDRadioButton.Tag = "0";
@@ -309,9 +326,10 @@
             // 
             this.RegisterRadioButton.AutoSize = true;
             this.RegisterRadioButton.Checked = true;
-            this.RegisterRadioButton.Location = new System.Drawing.Point(6, 39);
+            this.RegisterRadioButton.Location = new System.Drawing.Point(7, 49);
+            this.RegisterRadioButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.RegisterRadioButton.Name = "RegisterRadioButton";
-            this.RegisterRadioButton.Size = new System.Drawing.Size(98, 21);
+            this.RegisterRadioButton.Size = new System.Drawing.Size(112, 24);
             this.RegisterRadioButton.TabIndex = 23;
             this.RegisterRadioButton.TabStop = true;
             this.RegisterRadioButton.Tag = "0";
@@ -322,9 +340,10 @@
             // ImmediateRadioButton
             // 
             this.ImmediateRadioButton.AutoSize = true;
-            this.ImmediateRadioButton.Location = new System.Drawing.Point(118, 39);
+            this.ImmediateRadioButton.Location = new System.Drawing.Point(133, 49);
+            this.ImmediateRadioButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ImmediateRadioButton.Name = "ImmediateRadioButton";
-            this.ImmediateRadioButton.Size = new System.Drawing.Size(130, 21);
+            this.ImmediateRadioButton.Size = new System.Drawing.Size(148, 24);
             this.ImmediateRadioButton.TabIndex = 24;
             this.ImmediateRadioButton.TabStop = true;
             this.ImmediateRadioButton.Tag = "1";
@@ -336,9 +355,11 @@
             // 
             this.AdressingTypeGroup.Controls.Add(this.ImmediateRadioButton);
             this.AdressingTypeGroup.Controls.Add(this.RegisterRadioButton);
-            this.AdressingTypeGroup.Location = new System.Drawing.Point(20, 219);
+            this.AdressingTypeGroup.Location = new System.Drawing.Point(22, 274);
+            this.AdressingTypeGroup.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.AdressingTypeGroup.Name = "AdressingTypeGroup";
-            this.AdressingTypeGroup.Size = new System.Drawing.Size(309, 90);
+            this.AdressingTypeGroup.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.AdressingTypeGroup.Size = new System.Drawing.Size(348, 112);
             this.AdressingTypeGroup.TabIndex = 27;
             this.AdressingTypeGroup.TabStop = false;
             this.AdressingTypeGroup.Text = "Tryb Adresowania";
@@ -348,9 +369,11 @@
             this.IntructionGroupBox.Controls.Add(this.MOVRadioButton);
             this.IntructionGroupBox.Controls.Add(this.SUBRadioButton);
             this.IntructionGroupBox.Controls.Add(this.ADDRadioButton);
-            this.IntructionGroupBox.Location = new System.Drawing.Point(20, 315);
+            this.IntructionGroupBox.Location = new System.Drawing.Point(22, 394);
+            this.IntructionGroupBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.IntructionGroupBox.Name = "IntructionGroupBox";
-            this.IntructionGroupBox.Size = new System.Drawing.Size(309, 90);
+            this.IntructionGroupBox.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.IntructionGroupBox.Size = new System.Drawing.Size(348, 112);
             this.IntructionGroupBox.TabIndex = 28;
             this.IntructionGroupBox.TabStop = false;
             this.IntructionGroupBox.Text = "Rozkaz";
@@ -358,9 +381,10 @@
             // MOVRadioButton
             // 
             this.MOVRadioButton.AutoSize = true;
-            this.MOVRadioButton.Location = new System.Drawing.Point(235, 42);
+            this.MOVRadioButton.Location = new System.Drawing.Point(264, 52);
+            this.MOVRadioButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MOVRadioButton.Name = "MOVRadioButton";
-            this.MOVRadioButton.Size = new System.Drawing.Size(60, 21);
+            this.MOVRadioButton.Size = new System.Drawing.Size(70, 24);
             this.MOVRadioButton.TabIndex = 28;
             this.MOVRadioButton.Tag = "2";
             this.MOVRadioButton.Text = "MOV";
@@ -371,9 +395,10 @@
             // SUBRadioButton
             // 
             this.SUBRadioButton.AutoSize = true;
-            this.SUBRadioButton.Location = new System.Drawing.Point(120, 42);
+            this.SUBRadioButton.Location = new System.Drawing.Point(135, 52);
+            this.SUBRadioButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.SUBRadioButton.Name = "SUBRadioButton";
-            this.SUBRadioButton.Size = new System.Drawing.Size(57, 21);
+            this.SUBRadioButton.Size = new System.Drawing.Size(68, 24);
             this.SUBRadioButton.TabIndex = 27;
             this.SUBRadioButton.Tag = "1";
             this.SUBRadioButton.Text = "SUB";
@@ -383,9 +408,9 @@
             // DestinationLabel
             // 
             this.DestinationLabel.AutoSize = true;
-            this.DestinationLabel.Location = new System.Drawing.Point(205, 422);
+            this.DestinationLabel.Location = new System.Drawing.Point(153, 528);
             this.DestinationLabel.Name = "DestinationLabel";
-            this.DestinationLabel.Size = new System.Drawing.Size(18, 17);
+            this.DestinationLabel.Size = new System.Drawing.Size(21, 20);
             this.DestinationLabel.TabIndex = 29;
             this.DestinationLabel.Text = "D";
             // 
@@ -395,18 +420,21 @@
             this.DGroupBox.Controls.Add(this.CXRadioButton);
             this.DGroupBox.Controls.Add(this.BXRadioButton);
             this.DGroupBox.Controls.Add(this.AXRadioButton);
-            this.DGroupBox.Location = new System.Drawing.Point(180, 442);
+            this.DGroupBox.Location = new System.Drawing.Point(124, 552);
+            this.DGroupBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.DGroupBox.Name = "DGroupBox";
-            this.DGroupBox.Size = new System.Drawing.Size(62, 115);
+            this.DGroupBox.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.DGroupBox.Size = new System.Drawing.Size(70, 144);
             this.DGroupBox.TabIndex = 29;
             this.DGroupBox.TabStop = false;
             // 
             // DXRadioButton
             // 
             this.DXRadioButton.AutoSize = true;
-            this.DXRadioButton.Location = new System.Drawing.Point(4, 94);
+            this.DXRadioButton.Location = new System.Drawing.Point(4, 118);
+            this.DXRadioButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.DXRadioButton.Name = "DXRadioButton";
-            this.DXRadioButton.Size = new System.Drawing.Size(48, 21);
+            this.DXRadioButton.Size = new System.Drawing.Size(57, 24);
             this.DXRadioButton.TabIndex = 29;
             this.DXRadioButton.TabStop = true;
             this.DXRadioButton.Tag = "3";
@@ -418,9 +446,10 @@
             // CXRadioButton
             // 
             this.CXRadioButton.AutoSize = true;
-            this.CXRadioButton.Location = new System.Drawing.Point(4, 67);
+            this.CXRadioButton.Location = new System.Drawing.Point(4, 84);
+            this.CXRadioButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.CXRadioButton.Name = "CXRadioButton";
-            this.CXRadioButton.Size = new System.Drawing.Size(47, 21);
+            this.CXRadioButton.Size = new System.Drawing.Size(56, 24);
             this.CXRadioButton.TabIndex = 28;
             this.CXRadioButton.TabStop = true;
             this.CXRadioButton.Tag = "2";
@@ -432,9 +461,10 @@
             // BXRadioButton
             // 
             this.BXRadioButton.AutoSize = true;
-            this.BXRadioButton.Location = new System.Drawing.Point(5, 40);
+            this.BXRadioButton.Location = new System.Drawing.Point(6, 50);
+            this.BXRadioButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.BXRadioButton.Name = "BXRadioButton";
-            this.BXRadioButton.Size = new System.Drawing.Size(47, 21);
+            this.BXRadioButton.Size = new System.Drawing.Size(56, 24);
             this.BXRadioButton.TabIndex = 27;
             this.BXRadioButton.TabStop = true;
             this.BXRadioButton.Tag = "1";
@@ -447,9 +477,10 @@
             // 
             this.AXRadioButton.AutoSize = true;
             this.AXRadioButton.Checked = true;
-            this.AXRadioButton.Location = new System.Drawing.Point(5, 13);
+            this.AXRadioButton.Location = new System.Drawing.Point(6, 16);
+            this.AXRadioButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.AXRadioButton.Name = "AXRadioButton";
-            this.AXRadioButton.Size = new System.Drawing.Size(47, 21);
+            this.AXRadioButton.Size = new System.Drawing.Size(56, 24);
             this.AXRadioButton.TabIndex = 26;
             this.AXRadioButton.TabStop = true;
             this.AXRadioButton.Tag = "0";
@@ -461,16 +492,17 @@
             // ValueLabel
             // 
             this.ValueLabel.AutoSize = true;
-            this.ValueLabel.Location = new System.Drawing.Point(87, 582);
+            this.ValueLabel.Location = new System.Drawing.Point(8, 728);
             this.ValueLabel.Name = "ValueLabel";
-            this.ValueLabel.Size = new System.Drawing.Size(60, 17);
+            this.ValueLabel.Size = new System.Drawing.Size(68, 20);
             this.ValueLabel.TabIndex = 30;
             this.ValueLabel.Text = "Wartosc";
             // 
             // numericBox
             // 
             this.numericBox.Enabled = false;
-            this.numericBox.Location = new System.Drawing.Point(166, 582);
+            this.numericBox.Location = new System.Drawing.Point(88, 726);
+            this.numericBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.numericBox.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -482,14 +514,16 @@
             0,
             -2147483648});
             this.numericBox.Name = "numericBox";
-            this.numericBox.Size = new System.Drawing.Size(76, 22);
+            this.numericBox.Size = new System.Drawing.Size(86, 26);
             this.numericBox.TabIndex = 31;
+            this.numericBox.ValueChanged += new System.EventHandler(this.numericBox_ValueChanged);
             // 
             // StartActionButton
             // 
-            this.StartActionButton.Location = new System.Drawing.Point(413, 630);
+            this.StartActionButton.Location = new System.Drawing.Point(465, 788);
+            this.StartActionButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.StartActionButton.Name = "StartActionButton";
-            this.StartActionButton.Size = new System.Drawing.Size(208, 40);
+            this.StartActionButton.Size = new System.Drawing.Size(234, 50);
             this.StartActionButton.TabIndex = 32;
             this.StartActionButton.Text = "Wykonaj";
             this.StartActionButton.UseVisualStyleBackColor = true;
@@ -498,9 +532,9 @@
             // SourceLabel
             // 
             this.SourceLabel.AutoSize = true;
-            this.SourceLabel.Location = new System.Drawing.Point(114, 422);
+            this.SourceLabel.Location = new System.Drawing.Point(50, 528);
             this.SourceLabel.Name = "SourceLabel";
-            this.SourceLabel.Size = new System.Drawing.Size(17, 17);
+            this.SourceLabel.Size = new System.Drawing.Size(20, 20);
             this.SourceLabel.TabIndex = 33;
             this.SourceLabel.Text = "S";
             // 
@@ -510,18 +544,21 @@
             this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Controls.Add(this.radioButton3);
             this.groupBox1.Controls.Add(this.radioButton4);
-            this.groupBox1.Location = new System.Drawing.Point(89, 442);
+            this.groupBox1.Location = new System.Drawing.Point(22, 552);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(62, 115);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox1.Size = new System.Drawing.Size(70, 144);
             this.groupBox1.TabIndex = 30;
             this.groupBox1.TabStop = false;
             // 
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(4, 94);
+            this.radioButton1.Location = new System.Drawing.Point(4, 118);
+            this.radioButton1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(48, 21);
+            this.radioButton1.Size = new System.Drawing.Size(57, 24);
             this.radioButton1.TabIndex = 29;
             this.radioButton1.TabStop = true;
             this.radioButton1.Tag = "3";
@@ -532,9 +569,10 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(4, 67);
+            this.radioButton2.Location = new System.Drawing.Point(4, 84);
+            this.radioButton2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(47, 21);
+            this.radioButton2.Size = new System.Drawing.Size(56, 24);
             this.radioButton2.TabIndex = 28;
             this.radioButton2.TabStop = true;
             this.radioButton2.Tag = "2";
@@ -545,9 +583,10 @@
             // radioButton3
             // 
             this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(4, 40);
+            this.radioButton3.Location = new System.Drawing.Point(4, 50);
+            this.radioButton3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(47, 21);
+            this.radioButton3.Size = new System.Drawing.Size(56, 24);
             this.radioButton3.TabIndex = 27;
             this.radioButton3.TabStop = true;
             this.radioButton3.Tag = "1";
@@ -559,9 +598,10 @@
             // 
             this.radioButton4.AutoSize = true;
             this.radioButton4.Checked = true;
-            this.radioButton4.Location = new System.Drawing.Point(5, 13);
+            this.radioButton4.Location = new System.Drawing.Point(6, 16);
+            this.radioButton4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(47, 21);
+            this.radioButton4.Size = new System.Drawing.Size(56, 24);
             this.radioButton4.TabIndex = 26;
             this.radioButton4.TabStop = true;
             this.radioButton4.Tag = "0";
@@ -571,10 +611,10 @@
             // 
             // loadButton
             // 
-            this.loadButton.Location = new System.Drawing.Point(15, 630);
+            this.loadButton.Location = new System.Drawing.Point(17, 788);
             this.loadButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.loadButton.Name = "loadButton";
-            this.loadButton.Size = new System.Drawing.Size(300, 40);
+            this.loadButton.Size = new System.Drawing.Size(338, 50);
             this.loadButton.TabIndex = 35;
             this.loadButton.Text = "Załaduj";
             this.loadButton.UseVisualStyleBackColor = true;
@@ -582,10 +622,10 @@
             // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(627, 630);
+            this.clearButton.Location = new System.Drawing.Point(705, 788);
             this.clearButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.clearButton.Name = "clearButton";
-            this.clearButton.Size = new System.Drawing.Size(208, 40);
+            this.clearButton.Size = new System.Drawing.Size(234, 50);
             this.clearButton.TabIndex = 36;
             this.clearButton.Text = "Wyczyść";
             this.clearButton.UseVisualStyleBackColor = true;
@@ -593,18 +633,19 @@
             // 
             // CommandsExecutingModeLabel
             // 
-            this.CommandsExecutingModeLabel.Location = new System.Drawing.Point(419, 587);
+            this.CommandsExecutingModeLabel.Location = new System.Drawing.Point(471, 734);
             this.CommandsExecutingModeLabel.Name = "CommandsExecutingModeLabel";
-            this.CommandsExecutingModeLabel.Size = new System.Drawing.Size(191, 23);
+            this.CommandsExecutingModeLabel.Size = new System.Drawing.Size(215, 29);
             this.CommandsExecutingModeLabel.TabIndex = 37;
             this.CommandsExecutingModeLabel.Text = "Tryb wykonywania instrukcji";
             // 
             // stepByStepRadioButton
             // 
             this.stepByStepRadioButton.AutoSize = true;
-            this.stepByStepRadioButton.Location = new System.Drawing.Point(115, 3);
+            this.stepByStepRadioButton.Location = new System.Drawing.Point(129, 4);
+            this.stepByStepRadioButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.stepByStepRadioButton.Name = "stepByStepRadioButton";
-            this.stepByStepRadioButton.Size = new System.Drawing.Size(82, 21);
+            this.stepByStepRadioButton.Size = new System.Drawing.Size(93, 24);
             this.stepByStepRadioButton.TabIndex = 24;
             this.stepByStepRadioButton.TabStop = true;
             this.stepByStepRadioButton.Tag = "1";
@@ -616,9 +657,10 @@
             // 
             this.totalRadioButton.AutoSize = true;
             this.totalRadioButton.Checked = true;
-            this.totalRadioButton.Location = new System.Drawing.Point(3, 3);
+            this.totalRadioButton.Location = new System.Drawing.Point(3, 4);
+            this.totalRadioButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.totalRadioButton.Name = "totalRadioButton";
-            this.totalRadioButton.Size = new System.Drawing.Size(98, 21);
+            this.totalRadioButton.Size = new System.Drawing.Size(112, 24);
             this.totalRadioButton.TabIndex = 23;
             this.totalRadioButton.TabStop = true;
             this.totalRadioButton.Tag = "0";
@@ -630,9 +672,10 @@
             // 
             this.CommandExecutingOrderPanel.Controls.Add(this.stepByStepRadioButton);
             this.CommandExecutingOrderPanel.Controls.Add(this.totalRadioButton);
-            this.CommandExecutingOrderPanel.Location = new System.Drawing.Point(633, 582);
+            this.CommandExecutingOrderPanel.Location = new System.Drawing.Point(712, 728);
+            this.CommandExecutingOrderPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.CommandExecutingOrderPanel.Name = "CommandExecutingOrderPanel";
-            this.CommandExecutingOrderPanel.Size = new System.Drawing.Size(202, 26);
+            this.CommandExecutingOrderPanel.Size = new System.Drawing.Size(227, 32);
             this.CommandExecutingOrderPanel.TabIndex = 39;
             // 
             // commandsRichTextBox
@@ -640,19 +683,21 @@
             this.commandsRichTextBox.BackColor = System.Drawing.Color.Black;
             this.commandsRichTextBox.Font = new System.Drawing.Font("MS PGothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.commandsRichTextBox.ForeColor = System.Drawing.SystemColors.Window;
-            this.commandsRichTextBox.Location = new System.Drawing.Point(413, 9);
+            this.commandsRichTextBox.Location = new System.Drawing.Point(465, 11);
+            this.commandsRichTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.commandsRichTextBox.Name = "commandsRichTextBox";
             this.commandsRichTextBox.ReadOnly = true;
             this.commandsRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.commandsRichTextBox.Size = new System.Drawing.Size(422, 509);
+            this.commandsRichTextBox.Size = new System.Drawing.Size(474, 635);
             this.commandsRichTextBox.TabIndex = 40;
             this.commandsRichTextBox.Text = "";
             // 
             // readFromFileButton
             // 
-            this.readFromFileButton.Location = new System.Drawing.Point(627, 526);
+            this.readFromFileButton.Location = new System.Drawing.Point(705, 658);
+            this.readFromFileButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.readFromFileButton.Name = "readFromFileButton";
-            this.readFromFileButton.Size = new System.Drawing.Size(208, 30);
+            this.readFromFileButton.Size = new System.Drawing.Size(234, 38);
             this.readFromFileButton.TabIndex = 41;
             this.readFromFileButton.Text = "Wczytaj";
             this.readFromFileButton.UseVisualStyleBackColor = true;
@@ -660,9 +705,10 @@
             // 
             // saveToFileButton
             // 
-            this.saveToFileButton.Location = new System.Drawing.Point(413, 526);
+            this.saveToFileButton.Location = new System.Drawing.Point(465, 658);
+            this.saveToFileButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.saveToFileButton.Name = "saveToFileButton";
-            this.saveToFileButton.Size = new System.Drawing.Size(208, 30);
+            this.saveToFileButton.Size = new System.Drawing.Size(234, 38);
             this.saveToFileButton.TabIndex = 42;
             this.saveToFileButton.Text = "Zapisz";
             this.saveToFileButton.UseVisualStyleBackColor = true;
@@ -674,10 +720,10 @@
             // 
             // setRegisterValueButton
             // 
-            this.setRegisterValueButton.Location = new System.Drawing.Point(214, 170);
+            this.setRegisterValueButton.Location = new System.Drawing.Point(241, 212);
             this.setRegisterValueButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.setRegisterValueButton.Name = "setRegisterValueButton";
-            this.setRegisterValueButton.Size = new System.Drawing.Size(189, 30);
+            this.setRegisterValueButton.Size = new System.Drawing.Size(213, 38);
             this.setRegisterValueButton.TabIndex = 43;
             this.setRegisterValueButton.Text = "Ustaw rejestry";
             this.setRegisterValueButton.UseVisualStyleBackColor = true;
@@ -685,7 +731,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(328, 42);
+            this.numericUpDown1.Location = new System.Drawing.Point(369, 52);
             this.numericUpDown1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             32767,
@@ -698,13 +744,13 @@
             0,
             -2147483648});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(76, 22);
+            this.numericUpDown1.Size = new System.Drawing.Size(86, 26);
             this.numericUpDown1.TabIndex = 44;
             this.numericUpDown1.Tag = "0";
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(328, 70);
+            this.numericUpDown2.Location = new System.Drawing.Point(369, 88);
             this.numericUpDown2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown2.Maximum = new decimal(new int[] {
             32767,
@@ -717,13 +763,13 @@
             0,
             -2147483648});
             this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(76, 22);
+            this.numericUpDown2.Size = new System.Drawing.Size(86, 26);
             this.numericUpDown2.TabIndex = 45;
             this.numericUpDown2.Tag = "1";
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(328, 100);
+            this.numericUpDown3.Location = new System.Drawing.Point(369, 125);
             this.numericUpDown3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             32767,
@@ -736,13 +782,13 @@
             0,
             -2147483648});
             this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(76, 22);
+            this.numericUpDown3.Size = new System.Drawing.Size(86, 26);
             this.numericUpDown3.TabIndex = 46;
             this.numericUpDown3.Tag = "2";
             // 
             // numericUpDown4
             // 
-            this.numericUpDown4.Location = new System.Drawing.Point(328, 128);
+            this.numericUpDown4.Location = new System.Drawing.Point(369, 160);
             this.numericUpDown4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown4.Maximum = new decimal(new int[] {
             32767,
@@ -755,15 +801,102 @@
             0,
             -2147483648});
             this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(76, 22);
+            this.numericUpDown4.Size = new System.Drawing.Size(86, 26);
             this.numericUpDown4.TabIndex = 47;
             this.numericUpDown4.Tag = "3";
             // 
+            // pushButton
+            // 
+            this.pushButton.Location = new System.Drawing.Point(259, 615);
+            this.pushButton.Name = "pushButton";
+            this.pushButton.Size = new System.Drawing.Size(162, 37);
+            this.pushButton.TabIndex = 48;
+            this.pushButton.Tag = "0";
+            this.pushButton.Text = "PUSH";
+            this.pushButton.UseVisualStyleBackColor = true;
+            this.pushButton.Click += new System.EventHandler(this.PushButton_Click);
+            // 
+            // popButton
+            // 
+            this.popButton.Location = new System.Drawing.Point(259, 672);
+            this.popButton.Name = "popButton";
+            this.popButton.Size = new System.Drawing.Size(161, 38);
+            this.popButton.TabIndex = 49;
+            this.popButton.Tag = "1";
+            this.popButton.Text = "POP";
+            this.popButton.UseVisualStyleBackColor = true;
+            this.popButton.Click += new System.EventHandler(this.PopButton_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "NONE",
+            "INT10",
+            "INT16",
+            "INT1A(RTC SERVICES)"});
+            this.comboBox1.Location = new System.Drawing.Point(259, 567);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(156, 28);
+            this.comboBox1.TabIndex = 50;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(51, 20);
+            this.label1.TabIndex = 51;
+            this.label1.Text = "label1";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(283, 528);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(87, 20);
+            this.label2.TabIndex = 52;
+            this.label2.Text = "Przerwania";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "NONE",
+            "00h",
+            "01h",
+            "02h",
+            "03h",
+            "04h",
+            "05h",
+            "06h",
+            "07h"});
+            this.comboBox2.Location = new System.Drawing.Point(317, 724);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 28);
+            this.comboBox2.TabIndex = 53;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(196, 728);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(95, 20);
+            this.label3.TabIndex = 54;
+            this.label3.Text = "Wartość AH";
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(845, 687);
+            this.ClientSize = new System.Drawing.Size(951, 859);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.popButton);
+            this.Controls.Add(this.pushButton);
             this.Controls.Add(this.numericUpDown4);
             this.Controls.Add(this.numericUpDown3);
             this.Controls.Add(this.numericUpDown2);
@@ -807,6 +940,7 @@
             this.Controls.Add(this.BXLabel);
             this.Controls.Add(this.AXLabel);
             this.Controls.Add(this.RegisterLabel);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
             this.Text = "Mikroprocesor";
             this.AdressingTypeGroup.ResumeLayout(false);
@@ -891,6 +1025,13 @@
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.NumericUpDown numericUpDown4;
+        private System.Windows.Forms.Button pushButton;
+        private System.Windows.Forms.Button popButton;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Label label3;
     }
 }
 

@@ -73,6 +73,7 @@
     <Compile Include="Registers.cs" />
     <Compile Include="RegistersAdder.cs" />
     <Compile Include="SourceTypeContainer.cs" />
+    <Compile Include="TimeReader.cs" />
     <EmbeddedResource Include="ErrorForm.resx">
       <DependentUpon>ErrorForm.cs</DependentUpon>
     </EmbeddedResource>
