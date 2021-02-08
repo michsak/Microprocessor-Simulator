@@ -365,7 +365,15 @@ namespace MicroprocessorSimulator
             }
             else if(registryCommander[i].GetPushOrPopType() == 1)
             {
+                try
+                {
                 registers[registryCommander[i].GetRegisterType()]=(short)interruptsStack.Pop();
+
+                }
+                catch (InvalidOperationException)
+                {
+
+                }
 
                 string stringBytes = ConvertToBites(registers[registryCommander[i].GetRegisterType()]);
                 DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registryCommander[i].GetRegisterType()],
@@ -391,8 +399,21 @@ namespace MicroprocessorSimulator
             {
                 switch (registryCommander[i].GetInterruptIndex())
                 {
+                    case 4:
+                        SerialPortServices serialPortServices = new SerialPortServices(registers[0]);
+                        break;
                     case 3:
                         TimeReader timeReader = new TimeReader(registers[0]);
+                        break;
+                    case 5:
+                        PrinterServices printerServices = new PrinterServices(registers[0]);
+                        break;
+                    case 6:
+                        KeyboardServices keyboardServices = new KeyboardServices(registers[0]);
+                        registers[0] = (short)keyboardServices.keyValue;
+                        string stringBytes = ConvertToBites(registers[0]);
+                        DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[0], textBoxes[1]);
+                        numericBoxes[0].Value = registers[0];
                         break;
                 }
 

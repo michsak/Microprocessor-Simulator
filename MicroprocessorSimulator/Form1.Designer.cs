@@ -834,7 +834,10 @@
             "NONE",
             "INT10",
             "INT16",
-            "INT1A(RTC SERVICES)"});
+            "INT1A",
+            "INT14",
+            "INT17",
+            "INT16"});
             this.comboBox1.Location = new System.Drawing.Point(259, 567);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(156, 28);
