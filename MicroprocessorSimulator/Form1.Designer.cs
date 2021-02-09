@@ -91,7 +91,6 @@
             this.pushButton = new System.Windows.Forms.Button();
             this.popButton = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -832,25 +831,18 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "NONE",
-            "INT10",
-            "INT16",
-            "INT1A",
-            "INT14",
-            "INT17",
-            "INT16"});
+            "INT10(Video Services)",
+            "INT13(Low Level Disk Services)",
+            "INT14(Serial port services)",
+            "INT16(Keyboard services)",
+            "INT17(Printer services)",
+            "INT19(System reboot services)",
+            "INT1A(Real Time Clock Services)",
+            "INT20(Close system)"});
             this.comboBox1.Location = new System.Drawing.Point(259, 567);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(156, 28);
             this.comboBox1.TabIndex = 50;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 20);
-            this.label1.TabIndex = 51;
-            this.label1.Text = "label1";
             // 
             // label2
             // 
@@ -896,7 +888,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.popButton);
             this.Controls.Add(this.pushButton);
@@ -1031,7 +1022,6 @@
         private System.Windows.Forms.Button pushButton;
         private System.Windows.Forms.Button popButton;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label3;

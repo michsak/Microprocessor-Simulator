@@ -113,6 +113,10 @@ namespace MicroprocessorSimulator
         private void CleanRegistersButton_Click(object sender, EventArgs e)
         {
             FillRegistersWithZeros();
+            for (int j = 0; j < numericBoxes.Count; j++)
+            {
+                numericBoxes[j].Value = registers[j];
+            }
         }
 
         private string CheckIfOctet(int number)
@@ -242,14 +246,15 @@ namespace MicroprocessorSimulator
             FileReader fileReader = new FileReader(openFileDialog1.FileName);
             commandsRichTextBox.Text = fileReader.ReturnText();
 
-            string regexPattern = @"\d+.\s\b(IMM|REG)\b\s\b(ADD|SUB|MOV)\b\s\b(AX|BX|CX|DX)\b\s";
+            /*string regexPattern = @"\d+.\s\b(IMM|REG)\b\s\b(ADD|SUB|MOV)\b\s\b(AX|BX|CX|DX)\b\s|d+.\s\bPUSH (AX|BX|CX|DX)|d+.\s\bPOP (AX|BX|CX|DX)|d+.\s\bINT|d+.\s\b MOV";
             Regex regex = new Regex(regexPattern);
             int secondToLast = commandsRichTextBox.Lines.Count() - 2;
             bool firstLineIsValid = regex.IsMatch(commandsRichTextBox.Lines[0]) && regex.IsMatch(commandsRichTextBox.Lines[secondToLast]);
-
-            if (firstLineIsValid)
+            Console.WriteLine(firstLineIsValid);
+            */
+            if (true)  //firstLineIsValid
             {
-                IterateThroughAllLines(regex);
+                IterateThroughAllLines();  //regex
             }
             else
             {
@@ -258,7 +263,7 @@ namespace MicroprocessorSimulator
             }
         }
 
-        private void IterateThroughAllLines(Regex regex)
+        private void IterateThroughAllLines()  //Regex regex
         {
             int lastLine = commandsRichTextBox.Lines.Count() - 1;   //-1 cause last line in this formatting method always empty
             for (int i = 0; i < lastLine; i++)
@@ -268,8 +273,8 @@ namespace MicroprocessorSimulator
 
                 try
                 {
-                    bool isAnyLineBad = !regex.IsMatch(commandsRichTextBox.Lines[i]);
-                    if (isAnyLineBad) { break; }
+                    //bool isAnyLineBad = !regex.IsMatch(commandsRichTextBox.Lines[i]);
+                    //if (isAnyLineBad) { break; }
                     int addressingType = ChangeTypesToInt(seperateCommandComponents[1]);
                     int instructionType = ChangeTypesToInt(seperateCommandComponents[2]);
                     int sourceType = ChangeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
@@ -291,8 +296,8 @@ namespace MicroprocessorSimulator
                 }
                 catch
                 {
-                    ErrorForm errorForm = new ErrorForm();
-                    errorForm.ShowDialog();
+                    //ErrorForm errorForm = new ErrorForm();
+                    //errorForm.ShowDialog();
                 }
             }
         }
@@ -399,21 +404,33 @@ namespace MicroprocessorSimulator
             {
                 switch (registryCommander[i].GetInterruptIndex())
                 {
-                    case 4:
-                        SerialPortServices serialPortServices = new SerialPortServices(registers[0]);
+                    case 1:
+                        CursorPositionReader cursorPositionReader = new CursorPositionReader(registers[0], Cursor.Position.X, Cursor.Position.Y);
+                        break;
+                    case 2:
+                        DriverStatusChecker driverStatusChecker = new DriverStatusChecker(registers[0]);
                         break;
                     case 3:
-                        TimeReader timeReader = new TimeReader(registers[0]);
+                        SerialPortServices serialPortServices = new SerialPortServices(registers[0]);
                         break;
-                    case 5:
-                        PrinterServices printerServices = new PrinterServices(registers[0]);
-                        break;
-                    case 6:
+                    case 4:
                         KeyboardServices keyboardServices = new KeyboardServices(registers[0]);
                         registers[0] = (short)keyboardServices.keyValue;
                         string stringBytes = ConvertToBites(registers[0]);
                         DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[0], textBoxes[1]);
                         numericBoxes[0].Value = registers[0];
+                        break;
+                    case 5:
+                        PrinterServices printerServices = new PrinterServices(registers[0]);
+                        break;
+                    case 6:
+                        SystemRebooter systemRebooter = new SystemRebooter();
+                        break;
+                    case 7:
+                        TimeReader timeReader = new TimeReader(registers[0]);
+                        break;
+                    case 8:
+                        SystemSwitcher systemSwitcher = new SystemSwitcher();
                         break;
                 }
 
@@ -525,6 +542,8 @@ namespace MicroprocessorSimulator
                 }
 
             }
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
         }
 
         private void WriteCommandIntoTextbox(string command, string valueInText)

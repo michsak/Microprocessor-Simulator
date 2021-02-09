@@ -13,6 +13,10 @@ namespace MicroprocessorSimulator
         {
             if(subprogram == 0)
             {
+                MessageBox.Show($"RTC: {DateTime.Now.ToString()}");
+            }
+            if(subprogram == 512)
+            {
                 MessageBox.Show($"Obecna godzina: {DateTime.Now.ToString("HH:mm:ss: tt")}");
             }
 

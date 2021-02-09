@@ -11,7 +11,7 @@ namespace MicroprocessorSimulator
     {
         public CursorPositionReader(short subprogram, int x, int y)
         {
-            if (subprogram == 2560)         //2560 = 10h
+            if (subprogram == 768)
             {
                 int xCursorPosition = x;
                 int yCursorPosition = y;

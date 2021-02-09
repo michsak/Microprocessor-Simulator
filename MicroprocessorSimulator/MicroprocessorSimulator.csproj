@@ -53,7 +53,9 @@
     <Compile Include="AddressingTypeContainer.cs" />
     <Compile Include="AdressingTypes.cs" />
     <Compile Include="CommandExecutingType.cs" />
+    <Compile Include="CursorPositionReader.cs" />
     <Compile Include="DestinationTypeContainer.cs" />
+    <Compile Include="DriverStatusChecker.cs" />
     <Compile Include="ErrorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +86,8 @@
     <Compile Include="RegistersAdder.cs" />
     <Compile Include="SerialPortServices.cs" />
     <Compile Include="SourceTypeContainer.cs" />
+    <Compile Include="SystemRebooter.cs" />
+    <Compile Include="SystemSwitcher.cs" />
     <Compile Include="TimeReader.cs" />
     <EmbeddedResource Include="ErrorForm.resx">
       <DependentUpon>ErrorForm.cs</DependentUpon>
@@ -103,6 +107,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
