@@ -599,7 +599,7 @@
             // 
             // CommandsExecutingModeLabel
             // 
-            this.CommandsExecutingModeLabel.Location = new System.Drawing.Point(419, 587);
+            this.CommandsExecutingModeLabel.Location = new System.Drawing.Point(410, 583);
             this.CommandsExecutingModeLabel.Name = "CommandsExecutingModeLabel";
             this.CommandsExecutingModeLabel.Size = new System.Drawing.Size(191, 23);
             this.CommandsExecutingModeLabel.TabIndex = 37;
@@ -636,7 +636,7 @@
             // 
             this.CommandExecutingOrderPanel.Controls.Add(this.stepByStepRadioButton);
             this.CommandExecutingOrderPanel.Controls.Add(this.totalRadioButton);
-            this.CommandExecutingOrderPanel.Location = new System.Drawing.Point(633, 582);
+            this.CommandExecutingOrderPanel.Location = new System.Drawing.Point(633, 581);
             this.CommandExecutingOrderPanel.Name = "CommandExecutingOrderPanel";
             this.CommandExecutingOrderPanel.Size = new System.Drawing.Size(202, 26);
             this.CommandExecutingOrderPanel.TabIndex = 39;
@@ -767,10 +767,10 @@
             // 
             // pushButton
             // 
-            this.pushButton.Location = new System.Drawing.Point(230, 492);
+            this.pushButton.Location = new System.Drawing.Point(198, 492);
             this.pushButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pushButton.Name = "pushButton";
-            this.pushButton.Size = new System.Drawing.Size(144, 30);
+            this.pushButton.Size = new System.Drawing.Size(205, 30);
             this.pushButton.TabIndex = 48;
             this.pushButton.Tag = "0";
             this.pushButton.Text = "PUSH";
@@ -779,18 +779,19 @@
             // 
             // popButton
             // 
-            this.popButton.Location = new System.Drawing.Point(230, 538);
+            this.popButton.Location = new System.Drawing.Point(198, 538);
             this.popButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.popButton.Name = "popButton";
-            this.popButton.Size = new System.Drawing.Size(143, 30);
+            this.popButton.Size = new System.Drawing.Size(205, 30);
             this.popButton.TabIndex = 49;
             this.popButton.Tag = "1";
             this.popButton.Text = "POP";
             this.popButton.UseVisualStyleBackColor = true;
             this.popButton.Click += new System.EventHandler(this.PopButton_Click);
             // 
-            // comboBox1
+            // interruptsComboBox
             // 
+            this.interruptsComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.interruptsComboBox.FormattingEnabled = true;
             this.interruptsComboBox.Items.AddRange(new object[] {
             "NONE",
@@ -802,23 +803,24 @@
             "INT19(System reboot services)",
             "INT1A(Real Time Clock Services)",
             "INT20(Close system)"});
-            this.interruptsComboBox.Location = new System.Drawing.Point(230, 454);
+            this.interruptsComboBox.Location = new System.Drawing.Point(198, 454);
             this.interruptsComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.interruptsComboBox.Name = "comboBox1";
-            this.interruptsComboBox.Size = new System.Drawing.Size(139, 24);
+            this.interruptsComboBox.Name = "interruptsComboBox";
+            this.interruptsComboBox.Size = new System.Drawing.Size(205, 23);
             this.interruptsComboBox.TabIndex = 50;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(252, 422);
+            this.label2.Location = new System.Drawing.Point(262, 422);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(78, 17);
             this.label2.TabIndex = 52;
             this.label2.Text = "Przerwania";
             // 
-            // comboBox2
+            // aHValueComboBox
             // 
+            this.aHValueComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.aHValueComboBox.FormattingEnabled = true;
             this.aHValueComboBox.Items.AddRange(new object[] {
             "NONE",
@@ -830,16 +832,16 @@
             "05h",
             "06h",
             "07h"});
-            this.aHValueComboBox.Location = new System.Drawing.Point(282, 579);
+            this.aHValueComboBox.Location = new System.Drawing.Point(284, 581);
             this.aHValueComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.aHValueComboBox.Name = "comboBox2";
-            this.aHValueComboBox.Size = new System.Drawing.Size(108, 24);
+            this.aHValueComboBox.Name = "aHValueComboBox";
+            this.aHValueComboBox.Size = new System.Drawing.Size(119, 23);
             this.aHValueComboBox.TabIndex = 53;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(174, 582);
+            this.label3.Location = new System.Drawing.Point(195, 584);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(83, 17);
             this.label3.TabIndex = 54;

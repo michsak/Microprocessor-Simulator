@@ -41,7 +41,9 @@ namespace MicroprocessorSimulator
         private List<RegistersAdder> registryCommander = new List<RegistersAdder>();
         private Stack<int> interruptsStack = new Stack<int>();
         private Dictionary<String, Int16> aHToBinary = new Dictionary<String, Int16>();
-
+        private Dictionary<string, int> interruptsToIndexes = new Dictionary<string, int>();
+        private Dictionary<string, int> registersToNumbers = new Dictionary<string, int>();
+        private Dictionary<string, int> pushOrPopToNumbers = new Dictionary<string, int>();
 
         public Form1()
         {
@@ -52,6 +54,9 @@ namespace MicroprocessorSimulator
             FillRegistersWithZeros();
             InitializeNumericBoxList();
             InitializeAHDict();
+            InitializeInterruptsToIndexDict();
+            InitializeregistersToNumbersDict();
+            InitializePushOrPopeToNumbersDict();
 
             interruptsComboBox.SelectedIndex = 0;
             aHValueComboBox.SelectedIndex = 0;
@@ -89,6 +94,33 @@ namespace MicroprocessorSimulator
             aHToBinary.Add("08h", 2048);
             aHToBinary.Add("09h", 2304);
             aHToBinary.Add("10h", 2560);
+        }
+
+        private void InitializeInterruptsToIndexDict()
+        {
+            interruptsToIndexes.Add("NONE", 0);
+            interruptsToIndexes.Add("INT10", 1);
+            interruptsToIndexes.Add("INT13", 2);
+            interruptsToIndexes.Add("INT14", 3);
+            interruptsToIndexes.Add("INT16", 4);
+            interruptsToIndexes.Add("INT17", 5);
+            interruptsToIndexes.Add("INT19", 6);
+            interruptsToIndexes.Add("INT1A", 7);
+            interruptsToIndexes.Add("INT20", 8);
+        }
+
+        private void InitializeregistersToNumbersDict()
+        {
+            registersToNumbers.Add("AX", 0);
+            registersToNumbers.Add("BX", 1);
+            registersToNumbers.Add("CX", 2);
+            registersToNumbers.Add("DX", 3);
+        }
+
+        private void InitializePushOrPopeToNumbersDict()
+        {
+            pushOrPopToNumbers.Add("PUSH", 0);
+            pushOrPopToNumbers.Add("POP", 1);
         }
 
         private void CleanRegistersButton_Click(object sender, EventArgs e)
@@ -234,7 +266,7 @@ namespace MicroprocessorSimulator
 
             if (firstAndSecondToLastLinesAreValid)
             {
-                IterateThroughAllLines(regex);  //regex
+                IterateThroughAllLines(regex);
             }
             else
             {
@@ -243,18 +275,46 @@ namespace MicroprocessorSimulator
             }
         }
 
-        private void IterateThroughAllLines(Regex regex)  //Regex regex
+        private void IterateThroughAllLines(Regex regex)
         {
             int lastLine = commandsRichTextBox.Lines.Count() - 1;   //-1 cause last line in this formatting method always empty
             for (int i = 0; i < lastLine; i++)
             {
                 string currentCommand = commandsRichTextBox.Lines[i];
+                currentCommand = Regex.Replace(currentCommand, @"\(.*?\)", "");     //replace every bracket
                 string[] seperateCommandComponents = currentCommand.Split(' ');
 
-                try
+                //Console.WriteLine("Count of components" + seperateCommandComponents.Count());
+
+                bool isAnyLineBad = !regex.IsMatch(commandsRichTextBox.Lines[i]);
+                if (isAnyLineBad) { break; }
+
+                if (seperateCommandComponents.Count() == 2)
                 {
-                    bool isAnyLineBad = !regex.IsMatch(commandsRichTextBox.Lines[i]);
-                    if (isAnyLineBad) { break; }
+                    registryCommander.Add(new RegistersAdder(true, interruptsToIndexes[seperateCommandComponents[1].Replace(";","")]));
+                    totalCommandsNumber++;
+                }
+
+                else if (seperateCommandComponents.Count() == 3)
+                {
+                    int pushOrPopType = pushOrPopToNumbers[seperateCommandComponents[1].Replace(";","")];
+                    int registerType = registersToNumbers[seperateCommandComponents[2].Replace(";","")];
+
+                    registryCommander.Add(new RegistersAdder(pushOrPopType, registerType));
+                    totalCommandsNumber++;
+                }
+
+                else if (seperateCommandComponents.Count() == 4)
+                {
+                    int destinationType = 0;
+                    string value = seperateCommandComponents[3];
+                    value = value.Replace(";", "");
+                    registryCommander.Add(new RegistersAdder(destinationType, value));
+                    totalCommandsNumber++;
+                }
+
+                else
+                {
                     int addressingType = ChangeTypesToInt(seperateCommandComponents[1]);
                     int instructionType = ChangeTypesToInt(seperateCommandComponents[2]);
                     int sourceType = ChangeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
@@ -273,11 +333,6 @@ namespace MicroprocessorSimulator
 
                     registryCommander.Add(new RegistersAdder(addressingType, destinationType, sourceType, destinationType, value));
                     totalCommandsNumber++;
-                }
-                catch
-                {
-                    ErrorForm errorForm = new ErrorForm();
-                    errorForm.ShowDialog();
                 }
             }
         }
@@ -412,7 +467,6 @@ namespace MicroprocessorSimulator
                         SystemSwitcher systemSwitcher = new SystemSwitcher();
                         break;
                 }
-
             }
             else if (registryCommander[i].GetAddressingType() != -1)
             {
@@ -562,7 +616,7 @@ namespace MicroprocessorSimulator
         private void PushButton_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            int currentPushOrPullType = int.Parse(button.Tag.ToString());
+            int currentPushOrPullType = int.Parse(button.Tag.ToString());    //push - 0 pop -1
             string sourceTypeInText = sources.sourcesData[this.currentSourceType];
 
             string command = $"{totalCommandsNumber}. {button.Text} {sourceTypeInText};";
