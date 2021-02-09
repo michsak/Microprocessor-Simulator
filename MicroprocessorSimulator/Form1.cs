@@ -6,30 +6,10 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 
-//TODO
 //external interrupts
-//link http://www.ablmcc.edu.hk/~scy/CIT/8086_bios_and_dos_interrupts.htm
-//link https://en.wikipedia.org/wiki/BIOS_interrupt_call
-//link https://en.wikipedia.org/wiki/DOS_API
-//link http://spike.scu.edu.au/~barry/interrupts.html
-// sygnal powoduje zmiane przeplywu sterowania niezaleznie od wykonywanego dzialania --> wstrzymanie, wykonanie przerwania
-// rejestry AH,AL;BH,BL...
-//np odczytanie bufora z klawiatury --> Push AX (stos zapamietuje AX) --> MOV AH, 10H 
+//http://www.ablmcc.edu.hk/~scy/CIT/8086_bios_and_dos_interrupts.htm
+//https://en.wikipedia.org/wiki/BIOS_interrupt_call
 
-//BIOS
-//12h - odczyt rozmiaru zainstalowanej pamięci
-//70h - IRQ8 - zegar czasu rzeczywistego
-//10h - funkcja 02h - ustaw pozycje kursora
-//10h - funkcja 03h - odczytaj poz. kursora
-//15h funkcja C0H - informacje o srodowisku pracy
-//1Ah funkcja 04h - data RC
-//1Ah funkcja 02h - stan zegara RTC
-//DOS
-//AH 3C - stworz plik
-//AH 2A - pobierz date systemowa
-//AH 2C - pobierz czas systemowy
-//AH 0D - zamknij wszystkie pliki dysku (reset disk) --> FileSystem.Reset w c#
-//AH 0Fh - otworz plik
 
 namespace MicroprocessorSimulator
 {
@@ -72,8 +52,9 @@ namespace MicroprocessorSimulator
             FillRegistersWithZeros();
             InitializeNumericBoxList();
             InitializeAHDict();
-            comboBox1.SelectedIndex = 0;
-            comboBox2.SelectedIndex = 0;
+
+            interruptsComboBox.SelectedIndex = 0;
+            aHValueComboBox.SelectedIndex = 0;
         }
 
         private void InitializeNumericBoxList()
@@ -246,15 +227,14 @@ namespace MicroprocessorSimulator
             FileReader fileReader = new FileReader(openFileDialog1.FileName);
             commandsRichTextBox.Text = fileReader.ReturnText();
 
-            /*string regexPattern = @"\d+.\s\b(IMM|REG)\b\s\b(ADD|SUB|MOV)\b\s\b(AX|BX|CX|DX)\b\s|d+.\s\bPUSH (AX|BX|CX|DX)|d+.\s\bPOP (AX|BX|CX|DX)|d+.\s\bINT|d+.\s\b MOV";
+            string regexPattern = @"^\d+. (IMM|REG)|(ADD|SUB|MOV)|(PUSH|POP)|INT";
             Regex regex = new Regex(regexPattern);
             int secondToLast = commandsRichTextBox.Lines.Count() - 2;
-            bool firstLineIsValid = regex.IsMatch(commandsRichTextBox.Lines[0]) && regex.IsMatch(commandsRichTextBox.Lines[secondToLast]);
-            Console.WriteLine(firstLineIsValid);
-            */
-            if (true)  //firstLineIsValid
+            bool firstAndSecondToLastLinesAreValid = regex.IsMatch(commandsRichTextBox.Lines[0]) && regex.IsMatch(commandsRichTextBox.Lines[secondToLast]);
+
+            if (firstAndSecondToLastLinesAreValid)
             {
-                IterateThroughAllLines();  //regex
+                IterateThroughAllLines(regex);  //regex
             }
             else
             {
@@ -263,7 +243,7 @@ namespace MicroprocessorSimulator
             }
         }
 
-        private void IterateThroughAllLines()  //Regex regex
+        private void IterateThroughAllLines(Regex regex)  //Regex regex
         {
             int lastLine = commandsRichTextBox.Lines.Count() - 1;   //-1 cause last line in this formatting method always empty
             for (int i = 0; i < lastLine; i++)
@@ -273,8 +253,8 @@ namespace MicroprocessorSimulator
 
                 try
                 {
-                    //bool isAnyLineBad = !regex.IsMatch(commandsRichTextBox.Lines[i]);
-                    //if (isAnyLineBad) { break; }
+                    bool isAnyLineBad = !regex.IsMatch(commandsRichTextBox.Lines[i]);
+                    if (isAnyLineBad) { break; }
                     int addressingType = ChangeTypesToInt(seperateCommandComponents[1]);
                     int instructionType = ChangeTypesToInt(seperateCommandComponents[2]);
                     int sourceType = ChangeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
@@ -296,8 +276,8 @@ namespace MicroprocessorSimulator
                 }
                 catch
                 {
-                    //ErrorForm errorForm = new ErrorForm();
-                    //errorForm.ShowDialog();
+                    ErrorForm errorForm = new ErrorForm();
+                    errorForm.ShowDialog();
                 }
             }
         }
@@ -372,8 +352,7 @@ namespace MicroprocessorSimulator
             {
                 try
                 {
-                registers[registryCommander[i].GetRegisterType()]=(short)interruptsStack.Pop();
-
+                    registers[registryCommander[i].GetRegisterType()]=(short)interruptsStack.Pop();
                 }
                 catch (InvalidOperationException)
                 {
@@ -491,18 +470,18 @@ namespace MicroprocessorSimulator
 
         private void LoadActionsIntoMemory(object sender, EventArgs e)
         {
-            if(comboBox1.SelectedIndex != 0)
+            if(interruptsComboBox.SelectedIndex != 0)
             {
-                string command = $"{totalCommandsNumber}. {comboBox1.Text};";
-                registryCommander.Add(new RegistersAdder(true, comboBox1.SelectedIndex));
+                string command = $"{totalCommandsNumber}. {interruptsComboBox.Text};";
+                registryCommander.Add(new RegistersAdder(true, interruptsComboBox.SelectedIndex));
                 commandsRichTextBox.AppendText(command);
                 commandsRichTextBox.AppendText(Environment.NewLine);
                 totalCommandsNumber++;
             }
-            else if(comboBox2.SelectedIndex !=0)
+            else if(aHValueComboBox.SelectedIndex !=0)
             {
-                string command = $"{totalCommandsNumber}. MOV AH {comboBox2.Text};";
-                registryCommander.Add(new RegistersAdder(0, comboBox2.Text));
+                string command = $"{totalCommandsNumber}. MOV AH {aHValueComboBox.Text};";
+                registryCommander.Add(new RegistersAdder(0, aHValueComboBox.Text));
                 commandsRichTextBox.AppendText(command);
                 commandsRichTextBox.AppendText(Environment.NewLine);
                 totalCommandsNumber++;
@@ -542,8 +521,8 @@ namespace MicroprocessorSimulator
                 }
 
             }
-            comboBox1.SelectedIndex = 0;
-            comboBox2.SelectedIndex = 0;
+            interruptsComboBox.SelectedIndex = 0;
+            aHValueComboBox.SelectedIndex = 0;
         }
 
         private void WriteCommandIntoTextbox(string command, string valueInText)
@@ -606,15 +585,6 @@ namespace MicroprocessorSimulator
             commandsRichTextBox.AppendText(Environment.NewLine);
             registryCommander.Add(new RegistersAdder(currentPushOrPullType, currentDestinationType));
             totalCommandsNumber++;
-        }
-
-        private void numericBox_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ExecuteInterrupt()
-        {
         }
     }
 }
