@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Management;
 using System.Printing;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MicroprocessorSimulator
@@ -13,11 +11,6 @@ namespace MicroprocessorSimulator
     {
         public PrinterServices(short subprogram)
         {
-            List<string> names = new List<string>();
-            List<string> statuses = new List<string>();
-            List<string> isDefaults = new List<string>();
-            List<string> isNetworkPrinters = new List<string>();
-
             StringBuilder stringBuilder = new StringBuilder(15000);
 
             if (subprogram == 512)

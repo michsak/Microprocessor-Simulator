@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MicroprocessorSimulator
 {
@@ -17,6 +14,5 @@ namespace MicroprocessorSimulator
             sourcesData.Add(2, Enum.GetName(typeof(Registers), Registers.CX));
             sourcesData.Add(3, Enum.GetName(typeof(Registers), Registers.DX));
         }
-
     }
 }

@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-
-//external interrupts
-//http://www.ablmcc.edu.hk/~scy/CIT/8086_bios_and_dos_interrupts.htm
-//https://en.wikipedia.org/wiki/BIOS_interrupt_call
+    
+//TODO
+//code refactoring
+//corect MOV issue
 
 
 namespace MicroprocessorSimulator
@@ -38,12 +38,9 @@ namespace MicroprocessorSimulator
         private InstructionTypeContainer instructions = new InstructionTypeContainer();
         private SourceTypeContainer sources = new SourceTypeContainer();
         private DestinationTypeContainer destinations = new DestinationTypeContainer();
+        private AHValuesContainer ahValuesInBinary = new AHValuesContainer();
         private List<RegistersAdder> registryCommander = new List<RegistersAdder>();
         private Stack<int> interruptsStack = new Stack<int>();
-        private Dictionary<String, Int16> aHToBinary = new Dictionary<String, Int16>();
-        private Dictionary<string, int> interruptsToIndexes = new Dictionary<string, int>();
-        private Dictionary<string, int> registersToNumbers = new Dictionary<string, int>();
-        private Dictionary<string, int> pushOrPopToNumbers = new Dictionary<string, int>();
 
         public Form1()
         {
@@ -53,10 +50,6 @@ namespace MicroprocessorSimulator
             InitializeTextBoxList();
             FillRegistersWithZeros();
             InitializeNumericBoxList();
-            InitializeAHDict();
-            InitializeInterruptsToIndexDict();
-            InitializeregistersToNumbersDict();
-            InitializePushOrPopeToNumbersDict();
 
             interruptsComboBox.SelectedIndex = 0;
             aHValueComboBox.SelectedIndex = 0;
@@ -81,48 +74,6 @@ namespace MicroprocessorSimulator
             textBoxes.Add(textBox8);
         }
 
-        private void InitializeAHDict()
-        {
-            aHToBinary.Add("00h", 0);
-            aHToBinary.Add("01h", 256);
-            aHToBinary.Add("02h", 512);
-            aHToBinary.Add("03h", 768);
-            aHToBinary.Add("04h", 1024);
-            aHToBinary.Add("05h", 1280);
-            aHToBinary.Add("06h", 1536);
-            aHToBinary.Add("07h", 1792);
-            aHToBinary.Add("08h", 2048);
-            aHToBinary.Add("09h", 2304);
-            aHToBinary.Add("10h", 2560);
-        }
-
-        private void InitializeInterruptsToIndexDict()
-        {
-            interruptsToIndexes.Add("NONE", 0);
-            interruptsToIndexes.Add("INT10", 1);
-            interruptsToIndexes.Add("INT13", 2);
-            interruptsToIndexes.Add("INT14", 3);
-            interruptsToIndexes.Add("INT16", 4);
-            interruptsToIndexes.Add("INT17", 5);
-            interruptsToIndexes.Add("INT19", 6);
-            interruptsToIndexes.Add("INT1A", 7);
-            interruptsToIndexes.Add("INT20", 8);
-        }
-
-        private void InitializeregistersToNumbersDict()
-        {
-            registersToNumbers.Add("AX", 0);
-            registersToNumbers.Add("BX", 1);
-            registersToNumbers.Add("CX", 2);
-            registersToNumbers.Add("DX", 3);
-        }
-
-        private void InitializePushOrPopeToNumbersDict()
-        {
-            pushOrPopToNumbers.Add("PUSH", 0);
-            pushOrPopToNumbers.Add("POP", 1);
-        }
-
         private void CleanRegistersButton_Click(object sender, EventArgs e)
         {
             FillRegistersWithZeros();
@@ -136,7 +87,6 @@ namespace MicroprocessorSimulator
         {
             string uintString = Convert.ToString(number, toBase: 2);
             string convertedString = uintString;
-
 
             if (uintString.Length < 8)
             {
@@ -152,12 +102,9 @@ namespace MicroprocessorSimulator
         private string ConvertToBites(Int16 number)
         {
             string finalRegisterValue = "";
-
             finalRegisterValue = (number >= 0) ? "0" : "1";
-
             string intString = Convert.ToString(Math.Abs(number), toBase: 2);
             string convertedString = intString;
-
 
             if (intString.Length < 15)
             {
@@ -259,20 +206,24 @@ namespace MicroprocessorSimulator
             FileReader fileReader = new FileReader(openFileDialog1.FileName);
             commandsRichTextBox.Text = fileReader.ReturnText();
 
-            string regexPattern = @"^\d+. (IMM|REG)|(ADD|SUB|MOV)|(PUSH|POP)|INT";
-            Regex regex = new Regex(regexPattern);
-            int secondToLast = commandsRichTextBox.Lines.Count() - 2;
-            bool firstAndSecondToLastLinesAreValid = regex.IsMatch(commandsRichTextBox.Lines[0]) && regex.IsMatch(commandsRichTextBox.Lines[secondToLast]);
+            try
+            {
+                string regexPattern = @"^\d+. (IMM|REG)|(ADD|SUB|MOV)|(PUSH|POP)|INT";
+                Regex regex = new Regex(regexPattern);
+                int secondToLast = commandsRichTextBox.Lines.Count() - 2;
+                bool firstAndSecondToLastLinesAreValid = regex.IsMatch(commandsRichTextBox.Lines[0]) && regex.IsMatch(commandsRichTextBox.Lines[secondToLast]);
 
-            if (firstAndSecondToLastLinesAreValid)
-            {
-                IterateThroughAllLines(regex);
+                if (firstAndSecondToLastLinesAreValid)
+                {
+                    IterateThroughAllLines(regex);
+                }
+                else
+                {
+                    string errorMessage = "Uzytkowniku, wybierz poprawny plik!";
+                    commandsRichTextBox.Text = errorMessage;
+                }
             }
-            else
-            {
-                string errorMessage = "Uzytkowniku, wybierz poprawny plik!";
-                commandsRichTextBox.Text = errorMessage;
-            }
+            catch (System.IndexOutOfRangeException) { }
         }
 
         private void IterateThroughAllLines(Regex regex)
@@ -291,14 +242,14 @@ namespace MicroprocessorSimulator
 
                 if (seperateCommandComponents.Count() == 2)
                 {
-                    registryCommander.Add(new RegistersAdder(true, interruptsToIndexes[seperateCommandComponents[1].Replace(";","")]));
+                    registryCommander.Add(new RegistersAdder(true, ChangeTypesToInt(seperateCommandComponents[1].Replace(";",""))));
                     totalCommandsNumber++;
                 }
 
                 else if (seperateCommandComponents.Count() == 3)
                 {
-                    int pushOrPopType = pushOrPopToNumbers[seperateCommandComponents[1].Replace(";","")];
-                    int registerType = registersToNumbers[seperateCommandComponents[2].Replace(";","")];
+                    int pushOrPopType = ChangeTypesToInt(seperateCommandComponents[1].Replace(";",""));
+                    int registerType = ChangeTypesToInt(seperateCommandComponents[2].Replace(";",""));
 
                     registryCommander.Add(new RegistersAdder(pushOrPopType, registerType));
                     totalCommandsNumber++;
@@ -325,6 +276,8 @@ namespace MicroprocessorSimulator
                     {
                         destinationType = ChangeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
                     }
+
+                    //MOV przy wczytaniu z pliku zle dziala
                     else
                     {
                         destinationType = ChangeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
@@ -350,6 +303,17 @@ namespace MicroprocessorSimulator
                 {Enum.GetName(typeof(Registers), Registers.BX), (int)Registers.BX },
                 {Enum.GetName(typeof(Registers), Registers.CX), (int)Registers.CX },
                 {Enum.GetName(typeof(Registers), Registers.DX), (int)Registers.DX },
+                {Enum.GetName(typeof(Interrupts), Interrupts.NONE), (int)Interrupts.NONE },
+                {Enum.GetName(typeof(Interrupts), Interrupts.INT10), (int)Interrupts.INT10 },
+                {Enum.GetName(typeof(Interrupts), Interrupts.INT13), (int)Interrupts.INT13 },
+                {Enum.GetName(typeof(Interrupts), Interrupts.INT14), (int)Interrupts.INT14 },
+                {Enum.GetName(typeof(Interrupts), Interrupts.INT16), (int)Interrupts.INT16 },
+                {Enum.GetName(typeof(Interrupts), Interrupts.INT17), (int)Interrupts.INT17 },
+                {Enum.GetName(typeof(Interrupts), Interrupts.INT19), (int)Interrupts.INT19 },
+                {Enum.GetName(typeof(Interrupts), Interrupts.INT1A), (int)Interrupts.INT1A },
+                {Enum.GetName(typeof(Interrupts), Interrupts.INT20), (int)Interrupts.INT20 },
+                {Enum.GetName(typeof(PushAndPopStack), PushAndPopStack.PUSH), (int)PushAndPopStack.PUSH },
+                {Enum.GetName(typeof(PushAndPopStack), PushAndPopStack.POP), (int)PushAndPopStack.POP },
             };
 
             return changeDict[type];
@@ -409,10 +373,7 @@ namespace MicroprocessorSimulator
                 {
                     registers[registryCommander[i].GetRegisterType()]=(short)interruptsStack.Pop();
                 }
-                catch (InvalidOperationException)
-                {
-
-                }
+                catch (InvalidOperationException) { }
 
                 string stringBytes = ConvertToBites(registers[registryCommander[i].GetRegisterType()]);
                 DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registryCommander[i].GetRegisterType()],
@@ -424,7 +385,7 @@ namespace MicroprocessorSimulator
             }
             else if (registryCommander[i].GetAHValue() != "NONE")
             {
-                registers[registryCommander[i].GetDestinationType()] = aHToBinary[registryCommander[i].GetAHValue()];
+                registers[registryCommander[i].GetDestinationType()] = ahValuesInBinary.AHValues[registryCommander[i].GetAHValue()];
                 string stringBytes = ConvertToBites(registers[registryCommander[i].GetDestinationType()]);
                 DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registryCommander[i].GetDestinationType()],
                     textBoxes[2 * registryCommander[i].GetDestinationType() + 1]);
