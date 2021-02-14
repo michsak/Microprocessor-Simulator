@@ -775,7 +775,7 @@
             this.pushButton.Tag = "0";
             this.pushButton.Text = "PUSH";
             this.pushButton.UseVisualStyleBackColor = true;
-            this.pushButton.Click += new System.EventHandler(this.PushButton_Click);
+            this.pushButton.Click += new System.EventHandler(this.PushOrPop);
             // 
             // popButton
             // 
@@ -787,7 +787,7 @@
             this.popButton.Tag = "1";
             this.popButton.Text = "POP";
             this.popButton.UseVisualStyleBackColor = true;
-            this.popButton.Click += new System.EventHandler(this.PopButton_Click);
+            this.popButton.Click += new System.EventHandler(this.PushOrPop);
             // 
             // interruptsComboBox
             // 

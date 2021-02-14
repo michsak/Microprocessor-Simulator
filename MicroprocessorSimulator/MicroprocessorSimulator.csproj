@@ -55,7 +55,6 @@
     <Compile Include="AHValuesContainer.cs" />
     <Compile Include="CommandExecutingType.cs" />
     <Compile Include="CursorPositionReader.cs" />
-    <Compile Include="DestinationTypeContainer.cs" />
     <Compile Include="DriverStatusChecker.cs" />
     <Compile Include="ErrorForm.cs">
       <SubType>Form</SubType>
@@ -88,7 +87,7 @@
     <Compile Include="Registers.cs" />
     <Compile Include="RegistersAdder.cs" />
     <Compile Include="SerialPortServices.cs" />
-    <Compile Include="SourceTypeContainer.cs" />
+    <Compile Include="SourceAndDestinationTypeContainer.cs" />
     <Compile Include="SystemRebooter.cs" />
     <Compile Include="SystemSwitcher.cs" />
     <Compile Include="TimeReader.cs" />

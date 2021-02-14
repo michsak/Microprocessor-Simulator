@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MicroprocessorSimulator
@@ -24,11 +23,7 @@ namespace MicroprocessorSimulator
                         stringBuilder.Append($"Nazwa dysku: {drive.Name}  Rozmiar dysku: {drive.TotalSize} B\n");
                     }
                 }
-
-                
-
                 MessageBox.Show(stringBuilder.ToString());
-
             }
         }
     }

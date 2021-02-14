@@ -4,12 +4,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Text;
 
-    
 //TODO
-//code refactoring
 //corect MOV issue
-
 
 namespace MicroprocessorSimulator
 {
@@ -36,8 +34,7 @@ namespace MicroprocessorSimulator
         private List<NumericUpDown> numericBoxes = new List<NumericUpDown>();
         private AddressingTypeContainer addresses = new AddressingTypeContainer();
         private InstructionTypeContainer instructions = new InstructionTypeContainer();
-        private SourceTypeContainer sources = new SourceTypeContainer();
-        private DestinationTypeContainer destinations = new DestinationTypeContainer();
+        private SourceAndDestinationTypeContainer sourcesAndDestinations = new SourceAndDestinationTypeContainer();
         private AHValuesContainer ahValuesInBinary = new AHValuesContainer();
         private List<RegistersAdder> registryCommander = new List<RegistersAdder>();
         private Stack<int> interruptsStack = new Stack<int>();
@@ -50,7 +47,6 @@ namespace MicroprocessorSimulator
             InitializeTextBoxList();
             FillRegistersWithZeros();
             InitializeNumericBoxList();
-
             interruptsComboBox.SelectedIndex = 0;
             aHValueComboBox.SelectedIndex = 0;
         }
@@ -211,7 +207,8 @@ namespace MicroprocessorSimulator
                 string regexPattern = @"^\d+. (IMM|REG)|(ADD|SUB|MOV)|(PUSH|POP)|INT";
                 Regex regex = new Regex(regexPattern);
                 int secondToLast = commandsRichTextBox.Lines.Count() - 2;
-                bool firstAndSecondToLastLinesAreValid = regex.IsMatch(commandsRichTextBox.Lines[0]) && regex.IsMatch(commandsRichTextBox.Lines[secondToLast]);
+                bool firstAndSecondToLastLinesAreValid = regex.IsMatch(commandsRichTextBox.Lines[0]) && 
+                    regex.IsMatch(commandsRichTextBox.Lines[secondToLast]);
 
                 if (firstAndSecondToLastLinesAreValid)
                 {
@@ -234,19 +231,16 @@ namespace MicroprocessorSimulator
                 string currentCommand = commandsRichTextBox.Lines[i];
                 currentCommand = Regex.Replace(currentCommand, @"\(.*?\)", "");     //replace every bracket
                 string[] seperateCommandComponents = currentCommand.Split(' ');
-
-                //Console.WriteLine("Count of components" + seperateCommandComponents.Count());
-
                 bool isAnyLineBad = !regex.IsMatch(commandsRichTextBox.Lines[i]);
                 if (isAnyLineBad) { break; }
 
-                if (seperateCommandComponents.Count() == 2)
+                if (seperateCommandComponents.Count() == 2)  //interrupt
                 {
                     registryCommander.Add(new RegistersAdder(true, ChangeTypesToInt(seperateCommandComponents[1].Replace(";",""))));
                     totalCommandsNumber++;
                 }
 
-                else if (seperateCommandComponents.Count() == 3)
+                else if (seperateCommandComponents.Count() == 3) //push or pop
                 {
                     int pushOrPopType = ChangeTypesToInt(seperateCommandComponents[1].Replace(";",""));
                     int registerType = ChangeTypesToInt(seperateCommandComponents[2].Replace(";",""));
@@ -255,7 +249,7 @@ namespace MicroprocessorSimulator
                     totalCommandsNumber++;
                 }
 
-                else if (seperateCommandComponents.Count() == 4)
+                else if (seperateCommandComponents.Count() == 4)  //add,mov,sub
                 {
                     int destinationType = 0;
                     string value = seperateCommandComponents[3];
@@ -330,7 +324,7 @@ namespace MicroprocessorSimulator
 
                 currentExecutingCommand = 0;
                 System.Threading.Thread.Sleep(300);     //sleep for 300ms to enable user see performed action
-                ChangeAllTextBacgroundColor(backCommandBoxColor);
+                ChangeAllTextBackgroundColor(backCommandBoxColor);
             }
 
             else if(currentExecutingCommand < totalCommandsNumber && currentCommandsExecutingType == (int)CommandExecutingType.STEP_BY_STEP)
@@ -378,10 +372,8 @@ namespace MicroprocessorSimulator
                 string stringBytes = ConvertToBites(registers[registryCommander[i].GetRegisterType()]);
                 DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registryCommander[i].GetRegisterType()],
                     textBoxes[2 * registryCommander[i].GetRegisterType() + 1]);
-                for (int j = 0; j < numericBoxes.Count; j++)
-                {
-                    numericBoxes[j].Value = registers[j];
-                }
+
+                IterateThroughAllNumericBoxes();
             }
             else if (registryCommander[i].GetAHValue() != "NONE")
             {
@@ -390,53 +382,16 @@ namespace MicroprocessorSimulator
                 DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registryCommander[i].GetDestinationType()],
                     textBoxes[2 * registryCommander[i].GetDestinationType() + 1]);
 
-                for (int j = 0; j < numericBoxes.Count; j++)
-                {
-                    numericBoxes[j].Value = registers[j];
-                }
+                IterateThroughAllNumericBoxes();
             }
             else if (registryCommander[i].GetIsInterrupt())
             {
-                switch (registryCommander[i].GetInterruptIndex())
-                {
-                    case 1:
-                        CursorPositionReader cursorPositionReader = new CursorPositionReader(registers[0], Cursor.Position.X, Cursor.Position.Y);
-                        break;
-                    case 2:
-                        DriverStatusChecker driverStatusChecker = new DriverStatusChecker(registers[0]);
-                        break;
-                    case 3:
-                        SerialPortServices serialPortServices = new SerialPortServices(registers[0]);
-                        break;
-                    case 4:
-                        KeyboardServices keyboardServices = new KeyboardServices(registers[0]);
-                        registers[0] = (short)keyboardServices.keyValue;
-                        string stringBytes = ConvertToBites(registers[0]);
-                        DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[0], textBoxes[1]);
-                        numericBoxes[0].Value = registers[0];
-                        break;
-                    case 5:
-                        PrinterServices printerServices = new PrinterServices(registers[0]);
-                        break;
-                    case 6:
-                        SystemRebooter systemRebooter = new SystemRebooter();
-                        break;
-                    case 7:
-                        TimeReader timeReader = new TimeReader(registers[0]);
-                        break;
-                    case 8:
-                        SystemSwitcher systemSwitcher = new SystemSwitcher();
-                        break;
-                }
+                ChooseProperExecutingInterrupt(i);
             }
             else if (registryCommander[i].GetAddressingType() != -1)
             {
-                Int16 registerValue = (Int16)registryCommander[i].GetValue();
-
-                if (registryCommander[i].GetAddressingType() == (int)AddressingTypes.REG)
-                {
-                    registerValue = registers[registryCommander[i].GetSourceType()];
-                }
+                Int16 registerValue = (registryCommander[i].GetAddressingType() == (int)AddressingTypes.REG) ?
+                    registers[registryCommander[i].GetSourceType()] : (Int16)registryCommander[i].GetValue();
 
                 switch (registryCommander[i].GetInstructionType())
                 {
@@ -452,13 +407,53 @@ namespace MicroprocessorSimulator
                 }
 
                 string stringBytes = ConvertToBites(registers[registryCommander[i].GetDestinationType()]);
-                DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registryCommander[i].GetDestinationType()], 
+                DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[2 * registryCommander[i].GetDestinationType()],
                     textBoxes[2 * registryCommander[i].GetDestinationType() + 1]);
 
-                for (int j = 0; j < numericBoxes.Count; j++)
-                {
-                    numericBoxes[j].Value = registers[j];
-                }
+                IterateThroughAllNumericBoxes();
+            }
+        }
+
+        private void ChooseProperExecutingInterrupt(int i)
+        {
+            switch (registryCommander[i].GetInterruptIndex())
+            {
+                case 1:
+                    CursorPositionReader cursorPositionReader = new CursorPositionReader(registers[0], Cursor.Position.X, Cursor.Position.Y);
+                    break;
+                case 2:
+                    DriverStatusChecker driverStatusChecker = new DriverStatusChecker(registers[0]);
+                    break;
+                case 3:
+                    SerialPortServices serialPortServices = new SerialPortServices(registers[0]);
+                    break;
+                case 4:
+                    KeyboardServices keyboardServices = new KeyboardServices(registers[0]);
+                    registers[0] = (short)keyboardServices.keyValue;
+                    string stringBytes = ConvertToBites(registers[0]);
+                    DivideInt16NumberAndWriteToRegister(stringBytes, textBoxes[0], textBoxes[1]);
+                    numericBoxes[0].Value = registers[0];
+                    break;
+                case 5:
+                    PrinterServices printerServices = new PrinterServices(registers[0]);
+                    break;
+                case 6:
+                    SystemRebooter systemRebooter = new SystemRebooter();
+                    break;
+                case 7:
+                    TimeReader timeReader = new TimeReader(registers[0]);
+                    break;
+                case 8:
+                    SystemSwitcher systemSwitcher = new SystemSwitcher();
+                    break;
+            }
+        }
+
+        private void IterateThroughAllNumericBoxes()
+        {
+            for (int j = 0; j < numericBoxes.Count; j++)
+            {
+                numericBoxes[j].Value = registers[j];
             }
         }
 
@@ -469,7 +464,7 @@ namespace MicroprocessorSimulator
             commandsRichTextBox.SelectionBackColor = color;
         }
 
-        private void ChangeAllTextBacgroundColor (Color color)
+        private void ChangeAllTextBackgroundColor (Color color)
         {
             commandsRichTextBox.SelectionStart = commandsRichTextBox.GetFirstCharIndexFromLine(0);
             commandsRichTextBox.SelectionLength = commandsRichTextBox.TextLength;
@@ -485,25 +480,21 @@ namespace MicroprocessorSimulator
 
         private void LoadActionsIntoMemory(object sender, EventArgs e)
         {
-            if(interruptsComboBox.SelectedIndex != 0)
+            if (totalCommandsNumber <= maxNumberOfCommands)
             {
-                string command = $"{totalCommandsNumber}. {interruptsComboBox.Text};";
-                registryCommander.Add(new RegistersAdder(true, interruptsComboBox.SelectedIndex));
-                commandsRichTextBox.AppendText(command);
-                commandsRichTextBox.AppendText(Environment.NewLine);
-                totalCommandsNumber++;
-            }
-            else if(aHValueComboBox.SelectedIndex !=0)
-            {
-                string command = $"{totalCommandsNumber}. MOV AH {aHValueComboBox.Text};";
-                registryCommander.Add(new RegistersAdder(0, aHValueComboBox.Text));
-                commandsRichTextBox.AppendText(command);
-                commandsRichTextBox.AppendText(Environment.NewLine);
-                totalCommandsNumber++;
-            }
-            else
-            {
-                if (totalCommandsNumber <= maxNumberOfCommands)
+                if (interruptsComboBox.SelectedIndex != 0)
+                {
+                    string command = $"{totalCommandsNumber}. {interruptsComboBox.Text};";
+                    registryCommander.Add(new RegistersAdder(true, interruptsComboBox.SelectedIndex));
+                    WriteCommandIntoTextbox(command);
+                }
+                else if (aHValueComboBox.SelectedIndex != 0)
+                {
+                    string command = $"{totalCommandsNumber}. MOV AH {aHValueComboBox.Text};";
+                    registryCommander.Add(new RegistersAdder(0, aHValueComboBox.Text));
+                    WriteCommandIntoTextbox(command);
+                }
+                else
                 {
                     string command = "";
                     int currentSourceType = 0;
@@ -515,32 +506,31 @@ namespace MicroprocessorSimulator
                     if (currentAddressingType == (int)AddressingTypes.REG)
                     {
                         currentSourceType = this.currentSourceType;
-                        sourceTypeInText = sources.sourcesData[this.currentSourceType];
-                        destinationTypeInText = $"{destinations.destinationData[currentDestinationType]} ";
+                        sourceTypeInText = sourcesAndDestinations.sourcesAndDestinationsData[this.currentSourceType];
+                        destinationTypeInText = $"{sourcesAndDestinations.sourcesAndDestinationsData[currentDestinationType]} ";
                         valueInText = value.ToString().Replace("0", String.Empty);
                     }
                     else
                     {
                         value = (Int16)numericBox.Value;
                         currentSourceType = currentAddressingType;      //actually null is enough
-                        destinationTypeInText = $"{destinations.destinationData[currentDestinationType]}";
+                        destinationTypeInText = $"{sourcesAndDestinations.sourcesAndDestinationsData[currentDestinationType]}";
                         valueInText = value.ToString();
                     }
 
-                    command = $"{totalCommandsNumber}. {addresses.addressesData[currentAddressingType]} {instructions.instructionsData[currentInstructionType]} {destinationTypeInText}" +
-                        $"{sourceTypeInText} {valueInText};";
+                    command = $"{totalCommandsNumber}. {addresses.addressesData[currentAddressingType]} " +
+                        $"{instructions.instructionsData[currentInstructionType]} {destinationTypeInText}{sourceTypeInText} {valueInText};";
                     WriteCommandIntoTextbox(command, valueInText);
-
-                    registryCommander.Add(new RegistersAdder(currentAddressingType, currentInstructionType, currentSourceType, currentDestinationType, value));
-                    totalCommandsNumber++;
+                    registryCommander.Add(new RegistersAdder(currentAddressingType, currentInstructionType, 
+                        currentSourceType, currentDestinationType, value));
                 }
-
+                totalCommandsNumber++;
             }
             interruptsComboBox.SelectedIndex = 0;
             aHValueComboBox.SelectedIndex = 0;
         }
 
-        private void WriteCommandIntoTextbox(string command, string valueInText)
+        private void WriteCommandIntoTextbox(string command, string valueInText = " ")
         {
             if (valueInText.Equals(String.Empty))
             {
@@ -574,31 +564,17 @@ namespace MicroprocessorSimulator
             }
         }
 
-        private void PushButton_Click(object sender, EventArgs e)
-        {
-            Button button = (Button)sender;
-            int currentPushOrPullType = int.Parse(button.Tag.ToString());    //push - 0 pop -1
-            string sourceTypeInText = sources.sourcesData[this.currentSourceType];
-
-            string command = $"{totalCommandsNumber}. {button.Text} {sourceTypeInText};";
-
-            commandsRichTextBox.AppendText(command);
-            commandsRichTextBox.AppendText(Environment.NewLine);
-            registryCommander.Add(new RegistersAdder(currentPushOrPullType, currentSourceType));
-            totalCommandsNumber++;
-        }
-
-        private void PopButton_Click(object sender, EventArgs e)
+        private void PushOrPop(object sender, EventArgs e)
         {
             Button button = (Button)sender;
             int currentPushOrPullType = int.Parse(button.Tag.ToString());
-            string destinationTypeInText = destinations.destinationData[this.currentDestinationType];
-
-            string command = $"{totalCommandsNumber}. {button.Text} {destinationTypeInText};";
+            int sourceOrDestinationType = (currentPushOrPullType == 0) ? this.currentSourceType : this.currentDestinationType;  //push 0, pop 1
+            string destinationOrSourceTypeInText = sourcesAndDestinations.sourcesAndDestinationsData[sourceOrDestinationType];
+            string command = $"{totalCommandsNumber}. {button.Text} {destinationOrSourceTypeInText};";
 
             commandsRichTextBox.AppendText(command);
             commandsRichTextBox.AppendText(Environment.NewLine);
-            registryCommander.Add(new RegistersAdder(currentPushOrPullType, currentDestinationType));
+            registryCommander.Add(new RegistersAdder(currentPushOrPullType, sourceOrDestinationType));
             totalCommandsNumber++;
         }
     }

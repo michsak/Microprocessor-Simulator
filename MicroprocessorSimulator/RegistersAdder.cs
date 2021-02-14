@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MicroprocessorSimulator
 {
     public class RegistersAdder
     {
-        private int addressingType=-1;
-        private int instructionType=-1;
-        private int sourceType=-1;
-        private int destinationType=-1;
+        private int addressingType = -1;
+        private int instructionType = -1;
+        private int sourceType = -1;
+        private int destinationType = -1;
+        private int pushOrPopType = -1;
         private int value;
-        private int pushOrPopType=2;
         private int registerType;
         private int interruptIndex;
         private string ahValue="NONE";
