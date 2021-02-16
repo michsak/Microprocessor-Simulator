@@ -1,6 +1,6 @@
 # Microprocessor-Simulator
 
-Main project's aim is to map 16-bit microprocessor actions. <br>
+Main project's aim is to simulate 16-bit microprocessor actions. <br>
 Microprocessor consists of four 16-bit registers:
 <ul>
   <li>AX (AH, AL)</li>
