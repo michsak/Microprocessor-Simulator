@@ -71,4 +71,5 @@ Interrupts are carried out using stack. All of them are BIOS interrupt calls. Be
 In order to save value into memory press PUSH button and in order to load saved value from the top of the stack press POP button and choose destination register. <br>  
 Application also enables user to load commands from file or save them to it.<br>
 There's also a possibility to execute all commands at once or execute them step by step.<br>
-All commands added into memory are displayed in the black textbox.
+All commands added into memory are displayed in the black textbox. <br> <br>
+<img src = "overview.png">
