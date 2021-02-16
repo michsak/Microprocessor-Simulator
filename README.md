@@ -9,8 +9,8 @@ Microprocessor consists of four 16-bit registers:
   <li>DX (DH, DL)</li>
 </ul>
 Application can simulate operations like ADD, SUB and MOV in the either addressing or immediate mode.<br>
-User can choose source and destination registers in order to add value to preferable register.<br> <br>
-Interrupts are carried out using stack. All of them are BIOS interrupt calls. Below it's shown which AH value corresponds with given interrupt.<br>
+User can choose source and destination registers in order to add value to preferable register.<br>
+Interrupts are carried out using stack. All of them are BIOS interrupt calls. Below it's shown which AH value corresponds with given interrupt.<br><br>
 <table>
   <tr>
     <th> Interrupts vector </th>
