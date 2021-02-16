@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.RegisterLabel = new System.Windows.Forms.Label();
             this.AXLabel = new System.Windows.Forms.Label();
             this.BXLabel = new System.Windows.Forms.Label();
@@ -109,11 +110,11 @@
             // RegisterLabel
             // 
             this.RegisterLabel.AutoSize = true;
-            this.RegisterLabel.Location = new System.Drawing.Point(135, 9);
+            this.RegisterLabel.Location = new System.Drawing.Point(150, 9);
             this.RegisterLabel.Name = "RegisterLabel";
-            this.RegisterLabel.Size = new System.Drawing.Size(124, 17);
+            this.RegisterLabel.Size = new System.Drawing.Size(106, 17);
             this.RegisterLabel.TabIndex = 0;
-            this.RegisterLabel.Text = "Wartosci rejestrow";
+            this.RegisterLabel.Text = "Register values";
             // 
             // AXLabel
             // 
@@ -293,7 +294,7 @@
             this.CleanRegistersButton.Name = "CleanRegistersButton";
             this.CleanRegistersButton.Size = new System.Drawing.Size(189, 30);
             this.CleanRegistersButton.TabIndex = 21;
-            this.CleanRegistersButton.Text = "Wyczysc rejestry";
+            this.CleanRegistersButton.Text = "Clear registers";
             this.CleanRegistersButton.UseVisualStyleBackColor = true;
             this.CleanRegistersButton.Click += new System.EventHandler(this.CleanRegistersButton_Click);
             // 
@@ -317,11 +318,11 @@
             this.RegisterRadioButton.Checked = true;
             this.RegisterRadioButton.Location = new System.Drawing.Point(6, 39);
             this.RegisterRadioButton.Name = "RegisterRadioButton";
-            this.RegisterRadioButton.Size = new System.Drawing.Size(98, 21);
+            this.RegisterRadioButton.Size = new System.Drawing.Size(82, 21);
             this.RegisterRadioButton.TabIndex = 23;
             this.RegisterRadioButton.TabStop = true;
             this.RegisterRadioButton.Tag = "0";
-            this.RegisterRadioButton.Text = "Rejestrowy";
+            this.RegisterRadioButton.Text = "Register";
             this.RegisterRadioButton.UseVisualStyleBackColor = true;
             this.RegisterRadioButton.CheckedChanged += new System.EventHandler(this.ChooseAdressingTypeViaRadioButton);
             // 
@@ -330,11 +331,11 @@
             this.ImmediateRadioButton.AutoSize = true;
             this.ImmediateRadioButton.Location = new System.Drawing.Point(118, 39);
             this.ImmediateRadioButton.Name = "ImmediateRadioButton";
-            this.ImmediateRadioButton.Size = new System.Drawing.Size(130, 21);
+            this.ImmediateRadioButton.Size = new System.Drawing.Size(93, 21);
             this.ImmediateRadioButton.TabIndex = 24;
             this.ImmediateRadioButton.TabStop = true;
             this.ImmediateRadioButton.Tag = "1";
-            this.ImmediateRadioButton.Text = "Natychmiastowy";
+            this.ImmediateRadioButton.Text = "Immediate";
             this.ImmediateRadioButton.UseVisualStyleBackColor = true;
             this.ImmediateRadioButton.CheckedChanged += new System.EventHandler(this.ChooseAdressingTypeViaRadioButton);
             // 
@@ -347,7 +348,7 @@
             this.AdressingTypeGroup.Size = new System.Drawing.Size(309, 90);
             this.AdressingTypeGroup.TabIndex = 27;
             this.AdressingTypeGroup.TabStop = false;
-            this.AdressingTypeGroup.Text = "Tryb Adresowania";
+            this.AdressingTypeGroup.Text = "Addressing mode";
             // 
             // IntructionGroupBox
             // 
@@ -359,7 +360,7 @@
             this.IntructionGroupBox.Size = new System.Drawing.Size(309, 90);
             this.IntructionGroupBox.TabIndex = 28;
             this.IntructionGroupBox.TabStop = false;
-            this.IntructionGroupBox.Text = "Rozkaz";
+            this.IntructionGroupBox.Text = "Command";
             // 
             // MOVRadioButton
             // 
@@ -389,11 +390,11 @@
             // DestinationLabel
             // 
             this.DestinationLabel.AutoSize = true;
-            this.DestinationLabel.Location = new System.Drawing.Point(136, 422);
+            this.DestinationLabel.Location = new System.Drawing.Point(102, 422);
             this.DestinationLabel.Name = "DestinationLabel";
-            this.DestinationLabel.Size = new System.Drawing.Size(18, 17);
+            this.DestinationLabel.Size = new System.Drawing.Size(79, 17);
             this.DestinationLabel.TabIndex = 29;
-            this.DestinationLabel.Text = "D";
+            this.DestinationLabel.Text = "Destination";
             // 
             // DGroupBox
             // 
@@ -467,16 +468,16 @@
             // ValueLabel
             // 
             this.ValueLabel.AutoSize = true;
-            this.ValueLabel.Location = new System.Drawing.Point(7, 582);
+            this.ValueLabel.Location = new System.Drawing.Point(7, 588);
             this.ValueLabel.Name = "ValueLabel";
-            this.ValueLabel.Size = new System.Drawing.Size(60, 17);
+            this.ValueLabel.Size = new System.Drawing.Size(44, 17);
             this.ValueLabel.TabIndex = 30;
-            this.ValueLabel.Text = "Wartosc";
+            this.ValueLabel.Text = "Value";
             // 
             // numericBox
             // 
             this.numericBox.Enabled = false;
-            this.numericBox.Location = new System.Drawing.Point(78, 581);
+            this.numericBox.Location = new System.Drawing.Point(78, 584);
             this.numericBox.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -497,18 +498,18 @@
             this.StartActionButton.Name = "StartActionButton";
             this.StartActionButton.Size = new System.Drawing.Size(208, 40);
             this.StartActionButton.TabIndex = 32;
-            this.StartActionButton.Text = "Wykonaj";
+            this.StartActionButton.Text = "Execute";
             this.StartActionButton.UseVisualStyleBackColor = true;
             this.StartActionButton.Click += new System.EventHandler(this.ExecuteAction);
             // 
             // SourceLabel
             // 
             this.SourceLabel.AutoSize = true;
-            this.SourceLabel.Location = new System.Drawing.Point(44, 422);
+            this.SourceLabel.Location = new System.Drawing.Point(23, 422);
             this.SourceLabel.Name = "SourceLabel";
-            this.SourceLabel.Size = new System.Drawing.Size(17, 17);
+            this.SourceLabel.Size = new System.Drawing.Size(53, 17);
             this.SourceLabel.TabIndex = 33;
-            this.SourceLabel.Text = "S";
+            this.SourceLabel.Text = "Source";
             // 
             // groupBox1
             // 
@@ -582,7 +583,7 @@
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(300, 40);
             this.loadButton.TabIndex = 35;
-            this.loadButton.Text = "Załaduj";
+            this.loadButton.Text = "Load into memory";
             this.loadButton.UseVisualStyleBackColor = true;
             this.loadButton.Click += new System.EventHandler(this.LoadActionsIntoMemory);
             // 
@@ -593,28 +594,28 @@
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(208, 40);
             this.clearButton.TabIndex = 36;
-            this.clearButton.Text = "Wyczyść";
+            this.clearButton.Text = "Clear";
             this.clearButton.UseVisualStyleBackColor = true;
             this.clearButton.Click += new System.EventHandler(this.ClearCommands);
             // 
             // CommandsExecutingModeLabel
             // 
-            this.CommandsExecutingModeLabel.Location = new System.Drawing.Point(410, 583);
+            this.CommandsExecutingModeLabel.Location = new System.Drawing.Point(430, 588);
             this.CommandsExecutingModeLabel.Name = "CommandsExecutingModeLabel";
             this.CommandsExecutingModeLabel.Size = new System.Drawing.Size(191, 23);
             this.CommandsExecutingModeLabel.TabIndex = 37;
-            this.CommandsExecutingModeLabel.Text = "Tryb wykonywania instrukcji";
+            this.CommandsExecutingModeLabel.Text = "Instruction executing mode";
             // 
             // stepByStepRadioButton
             // 
             this.stepByStepRadioButton.AutoSize = true;
-            this.stepByStepRadioButton.Location = new System.Drawing.Point(115, 3);
+            this.stepByStepRadioButton.Location = new System.Drawing.Point(80, 3);
             this.stepByStepRadioButton.Name = "stepByStepRadioButton";
-            this.stepByStepRadioButton.Size = new System.Drawing.Size(82, 21);
+            this.stepByStepRadioButton.Size = new System.Drawing.Size(108, 21);
             this.stepByStepRadioButton.TabIndex = 24;
             this.stepByStepRadioButton.TabStop = true;
             this.stepByStepRadioButton.Tag = "1";
-            this.stepByStepRadioButton.Text = "Krokowy";
+            this.stepByStepRadioButton.Text = "Step by step";
             this.stepByStepRadioButton.UseVisualStyleBackColor = true;
             this.stepByStepRadioButton.CheckedChanged += new System.EventHandler(this.ChooseCommandsExecutingTypeViaRadioButton);
             // 
@@ -624,11 +625,11 @@
             this.totalRadioButton.Checked = true;
             this.totalRadioButton.Location = new System.Drawing.Point(3, 3);
             this.totalRadioButton.Name = "totalRadioButton";
-            this.totalRadioButton.Size = new System.Drawing.Size(98, 21);
+            this.totalRadioButton.Size = new System.Drawing.Size(61, 21);
             this.totalRadioButton.TabIndex = 23;
             this.totalRadioButton.TabStop = true;
             this.totalRadioButton.Tag = "0";
-            this.totalRadioButton.Text = "Calosciowy";
+            this.totalRadioButton.Text = "Total";
             this.totalRadioButton.UseVisualStyleBackColor = true;
             this.totalRadioButton.CheckedChanged += new System.EventHandler(this.ChooseCommandsExecutingTypeViaRadioButton);
             // 
@@ -636,7 +637,7 @@
             // 
             this.CommandExecutingOrderPanel.Controls.Add(this.stepByStepRadioButton);
             this.CommandExecutingOrderPanel.Controls.Add(this.totalRadioButton);
-            this.CommandExecutingOrderPanel.Location = new System.Drawing.Point(633, 581);
+            this.CommandExecutingOrderPanel.Location = new System.Drawing.Point(633, 584);
             this.CommandExecutingOrderPanel.Name = "CommandExecutingOrderPanel";
             this.CommandExecutingOrderPanel.Size = new System.Drawing.Size(202, 26);
             this.CommandExecutingOrderPanel.TabIndex = 39;
@@ -660,7 +661,7 @@
             this.readFromFileButton.Name = "readFromFileButton";
             this.readFromFileButton.Size = new System.Drawing.Size(208, 30);
             this.readFromFileButton.TabIndex = 41;
-            this.readFromFileButton.Text = "Wczytaj";
+            this.readFromFileButton.Text = "Load file";
             this.readFromFileButton.UseVisualStyleBackColor = true;
             this.readFromFileButton.Click += new System.EventHandler(this.ReadFromFile);
             // 
@@ -670,7 +671,7 @@
             this.saveToFileButton.Name = "saveToFileButton";
             this.saveToFileButton.Size = new System.Drawing.Size(208, 30);
             this.saveToFileButton.TabIndex = 42;
-            this.saveToFileButton.Text = "Zapisz";
+            this.saveToFileButton.Text = "Save file";
             this.saveToFileButton.UseVisualStyleBackColor = true;
             this.saveToFileButton.Click += new System.EventHandler(this.SaveToFile);
             // 
@@ -685,7 +686,7 @@
             this.setRegisterValueButton.Name = "setRegisterValueButton";
             this.setRegisterValueButton.Size = new System.Drawing.Size(189, 30);
             this.setRegisterValueButton.TabIndex = 43;
-            this.setRegisterValueButton.Text = "Ustaw rejestry";
+            this.setRegisterValueButton.Text = "Set registers";
             this.setRegisterValueButton.UseVisualStyleBackColor = true;
             this.setRegisterValueButton.Click += new System.EventHandler(this.setRegisterValueButton_Click);
             // 
@@ -814,9 +815,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(262, 422);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 17);
+            this.label2.Size = new System.Drawing.Size(68, 17);
             this.label2.TabIndex = 52;
-            this.label2.Text = "Przerwania";
+            this.label2.Text = "Interrupts";
             // 
             // aHValueComboBox
             // 
@@ -832,7 +833,7 @@
             "05h",
             "06h",
             "07h"});
-            this.aHValueComboBox.Location = new System.Drawing.Point(284, 581);
+            this.aHValueComboBox.Location = new System.Drawing.Point(284, 584);
             this.aHValueComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.aHValueComboBox.Name = "aHValueComboBox";
             this.aHValueComboBox.Size = new System.Drawing.Size(119, 23);
@@ -841,11 +842,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(195, 584);
+            this.label3.Location = new System.Drawing.Point(195, 588);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(83, 17);
+            this.label3.Size = new System.Drawing.Size(65, 17);
             this.label3.TabIndex = 54;
-            this.label3.Text = "Wartość AH";
+            this.label3.Text = "AH value";
             // 
             // Form1
             // 
@@ -901,8 +902,9 @@
             this.Controls.Add(this.BXLabel);
             this.Controls.Add(this.AXLabel);
             this.Controls.Add(this.RegisterLabel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Mikroprocesor";
+            this.Text = "Microprocessor";
             this.AdressingTypeGroup.ResumeLayout(false);
             this.AdressingTypeGroup.PerformLayout();
             this.IntructionGroupBox.ResumeLayout(false);

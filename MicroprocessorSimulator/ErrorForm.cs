@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -18,7 +16,7 @@ namespace MicroprocessorSimulator
 
         private void InitializeErrorMessage()
         {
-            string errorMessage = "Uzytkowniku, wybierz poprawny format pliku!";
+            string errorMessage = "Please choose the proper format file!";
             errorLabel.Text = errorMessage;
         }
     }

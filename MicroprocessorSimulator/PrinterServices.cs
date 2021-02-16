@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Management;
 using System.Printing;
 using System.Text;
@@ -11,7 +10,7 @@ namespace MicroprocessorSimulator
     {
         public PrinterServices(short subprogram)
         {
-            StringBuilder stringBuilder = new StringBuilder(15000);
+            StringBuilder stringBuilder = new StringBuilder(10000);
 
             if (subprogram == 512)
             {

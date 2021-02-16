@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -20,7 +19,7 @@ namespace MicroprocessorSimulator
                 {
                     if (drive.IsReady)
                     {
-                        stringBuilder.Append($"Nazwa dysku: {drive.Name}  Rozmiar dysku: {drive.TotalSize} B\n");
+                        stringBuilder.Append($"Disk name: {drive.Name}  Disk size: {drive.TotalSize} B\n");
                     }
                 }
                 MessageBox.Show(stringBuilder.ToString());

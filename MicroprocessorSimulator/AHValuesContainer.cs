@@ -4,6 +4,10 @@ using System.Text;
 
 namespace MicroprocessorSimulator
 {
+
+    /// <summary>
+    /// AH values corresponding to interrupts
+    /// </summary>
     class AHValuesContainer
     {
         public Dictionary<string, short> AHValues = new Dictionary<string, short>();

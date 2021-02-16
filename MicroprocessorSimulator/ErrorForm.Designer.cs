@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ErrorForm));
             this.errorLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -37,7 +38,7 @@
             this.errorLabel.Name = "errorLabel";
             this.errorLabel.Size = new System.Drawing.Size(217, 47);
             this.errorLabel.TabIndex = 1;
-            this.errorLabel.Text = "Uzytkowniku, wybierz poprawny format pliku!";
+            this.errorLabel.Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ";
             // 
             // ErrorForm
             // 
@@ -45,6 +46,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(241, 65);
             this.Controls.Add(this.errorLabel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ErrorForm";
             this.Text = "Error";
             this.ResumeLayout(false);

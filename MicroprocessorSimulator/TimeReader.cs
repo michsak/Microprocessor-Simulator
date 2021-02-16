@@ -16,12 +16,12 @@ namespace MicroprocessorSimulator
             }
             if(subprogram == 512)
             {
-                MessageBox.Show($"Obecna godzina: {DateTime.Now.ToString("HH:mm:ss: tt")}");
+                MessageBox.Show($"Today's hour: {DateTime.Now.ToString("HH:mm:ss: tt")}");
             }
 
             if(subprogram == 1024)
             {
-                MessageBox.Show($"Dzisiejsza data: {DateTime.Now.ToString("M/d/yyyy")}");
+                MessageBox.Show($"Today's date: {DateTime.Now.ToString("M/d/yyyy")}");
             }
             
         }

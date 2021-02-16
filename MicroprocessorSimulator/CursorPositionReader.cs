@@ -13,7 +13,7 @@ namespace MicroprocessorSimulator
             {
                 int xCursorPosition = x;
                 int yCursorPosition = y;
-                MessageBox.Show($"Wspolrzedna x kursora: {x}\n Wspolrzedna y kursora: {y}");
+                MessageBox.Show($"X cursor coordinates: {x}\nY cursor coordinates: {y}");
             }
         }
     }

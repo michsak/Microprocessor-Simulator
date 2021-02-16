@@ -6,8 +6,6 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Text;
 
-//TODO
-//corect MOV issue
 
 namespace MicroprocessorSimulator
 {
@@ -216,7 +214,7 @@ namespace MicroprocessorSimulator
                 }
                 else
                 {
-                    string errorMessage = "Uzytkowniku, wybierz poprawny plik!";
+                    string errorMessage = "Please choose the proper file!";
                     commandsRichTextBox.Text = errorMessage;
                 }
             }
@@ -249,16 +247,17 @@ namespace MicroprocessorSimulator
                     totalCommandsNumber++;
                 }
 
-                else if (seperateCommandComponents.Count() == 4)  //add,mov,sub
+                else if (seperateCommandComponents.Count() == 4)  //for read from file add,sub,mov
                 {
                     int destinationType = 0;
                     string value = seperateCommandComponents[3];
                     value = value.Replace(";", "");
                     registryCommander.Add(new RegistersAdder(destinationType, value));
                     totalCommandsNumber++;
+                    Console.WriteLine("thos");
                 }
 
-                else
+                else    //add,mov,sub
                 {
                     int addressingType = ChangeTypesToInt(seperateCommandComponents[1]);
                     int instructionType = ChangeTypesToInt(seperateCommandComponents[2]);
@@ -271,14 +270,13 @@ namespace MicroprocessorSimulator
                         destinationType = ChangeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
                     }
 
-                    //MOV przy wczytaniu z pliku zle dziala
                     else
                     {
                         destinationType = ChangeTypesToInt(seperateCommandComponents[seperateCommandComponents.Length - 2]);
                         value = int.Parse(seperateCommandComponents[seperateCommandComponents.Length - 1].Replace(";", String.Empty));
                     }
 
-                    registryCommander.Add(new RegistersAdder(addressingType, destinationType, sourceType, destinationType, value));
+                    registryCommander.Add(new RegistersAdder(addressingType, instructionType, sourceType, destinationType, value));
                     totalCommandsNumber++;
                 }
             }
@@ -513,7 +511,7 @@ namespace MicroprocessorSimulator
                     else
                     {
                         value = (Int16)numericBox.Value;
-                        currentSourceType = currentAddressingType;      //actually null is enough
+                        currentSourceType = currentAddressingType;
                         destinationTypeInText = $"{sourcesAndDestinations.sourcesAndDestinationsData[currentDestinationType]}";
                         valueInText = value.ToString();
                     }
